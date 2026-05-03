@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bluemint">
+<!-- Lớp nền trắng bo góc bên dưới -->
+    <View
+            android:id="@+id/bgWhiteForm"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/img_white_bg_login"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Nút Back -->
+    <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/img_left_arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/bgWhiteForm" />
+
+    <!-- Tiêu đề: TÀI KHOẢN MẬT KHẨU -->
+    <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="TÀI KHOẢN MẬT KHẨU"
+            android:textColor="@color/darkbluemint"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintStart_toEndOf="@id/btnBack"
+            app:layout_constraintTop_toTopOf="@id/btnBack" />
+
+    <!-- 1. Tên Đăng Nhập -->
+    <TextView
+            android:id="@+id/labelUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:text="Tên Đăng Nhập"
+            android:textColor="@color/darkbluemint"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edtUsername"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/img_blue_round_bg_login"
+            android:backgroundTint="@null"
+            android:hint="An123"
+            android:inputType="textNoSuggestions"
+            android:paddingHorizontal="24dp"
+            android:textColor="@color/darkbluemint"
+            android:textColorHint="@color/darklightbluemint"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/labelUsername" />
+
+    <!-- 2. Mật khẩu -->
+    <TextView
+            android:id="@+id/labelPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:text="Mật khẩu:"
+            android:textColor="@color/darkbluemint"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtUsername" />
+
+    <!-- Lưu ý: inputType="textPassword" để ẩn ký tự khi gõ -->
+    <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edtPassword"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/img_blue_round_bg_login"
+            android:backgroundTint="@null"
+            android:hint="****************"
+            android:inputType="textPassword"
+            android:paddingHorizontal="24dp"
+            android:textColor="@color/darkbluemint"
+            android:textColorHint="@color/darklightbluemint"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/labelPassword" />
+
+    <!-- 3. Xác nhận mật khẩu -->
+    <TextView
+            android:id="@+id/labelConfirmPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:text="Xác nhận mật khẩu"
+            android:textColor="@color/darkbluemint"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtPassword" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edtConfirmPassword"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/img_blue_round_bg_login"
+            android:backgroundTint="@null"
+            android:hint="****************"
+            android:inputType="textPassword"
+            android:paddingHorizontal="24dp"
+            android:textColor="@color/darkbluemint"
+            android:textColorHint="@color/darklightbluemint"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/labelConfirmPassword" />
+
+    <!-- Nút ĐĂNG KÝ -->
+    <!-- Chú ý dùng backgroundTint="@null" để không bị tím -->
+    <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnRegisterSubmit"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="48dp"
+            android:layout_marginTop="48dp"
+            android:background="@drawable/img_darkblue_bg_login"
+            android:backgroundTint="@null"
+            android:elevation="4dp"
+            android:text="ĐĂNG KÝ"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtConfirmPassword" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
