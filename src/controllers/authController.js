@@ -4,7 +4,7 @@ const User = require('../models/User');
 
 exports.register = async (req, res) => {
     try {
-        const { cccd, password, fullName, dob, gender, address, email, phone } = req.body;
+        const { cccd, password, full_name, dob, gender, address, email, phone } = req.body;
 
         // Check tồn tại
         const existingUser = await User.findByCCCD(cccd);
