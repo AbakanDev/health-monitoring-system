@@ -1,55 +1,51 @@
-const pool = require('../config/db');
-const bcrypt = require('bcrypt');
+const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
-const registerUser = async (req, res) => {
+exports.register = async (req, res) => {
     try {
-        // 1. Lấy dữ liệu từ body của request (do App Android gửi lên)
-        const { cccd, password, full_name, dob, gender, address, email, phone } = req.body;
+        // 1. Lấy dữ liệu từ body (Android gửi lên)
+        const { cccd, password, fullName, dob, gender, address, email, phone } = req.body;
 
-        // 2. Mã hóa mật khẩu
-        const saltRounds = 10;
-        const password_hash = await bcrypt.hash(password, saltRounds);
-
-        // 3. Chuẩn bị câu lệnh SQL an toàn (dùng ? để chống SQL Injection)
-        const sql = `
-            INSERT INTO users (cccd, password_hash, full_name, dob, gender, address, email, phone) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        `;
-        
-        // Mảng giá trị tương ứng với các dấu ? ở trên
-        const values = [cccd, password_hash, full_name, dob, gender, address, email, phone];
-
-        // 4. Thực thi câu lệnh
-        const [result] = await pool.execute(sql, values);
-
-        // 5. Trả về phản hồi cho App Android
-        res.status(201).json({
-            status: 'success',
-            message: 'Đăng ký người dùng thành công!',
-            data: {
-                id_user: result.insertId,
-                cccd: cccd,
-                full_name: full_name
-            }
-        });
-
-    } catch (error) {
-        console.error("Lỗi khi thêm user:", error);
-        
-        // Xử lý lỗi trùng lặp dữ liệu (do set UNIQUE ở cccd, email, phone)
-        if (error.code === 'ER_DUP_ENTRY') {
-            return res.status(400).json({ 
-                status: 'error', 
-                message: 'CCCD, Số điện thoại hoặc Email đã tồn tại trong hệ thống.' 
+        // 2. Kiểm tra xem CCCD đã tồn tại trong DB chưa
+        const existingUser = await User.findOne({ cccd });
+        if (existingUser) {
+            // Trả về lỗi để Android hứng và hiện Toast
+            return res.status(400).json({
+                status: 'error',
+                message: 'CCCD này đã được đăng ký!'
             });
         }
 
-        // Lỗi server khác
-        res.status(500).json({ 
-            status: 'error', 
-            message: 'Lỗi server nội bộ. Không thể thêm người dùng.' 
+        // 3. Mã hóa mật khẩu (băm 10 vòng)
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        // 4. Tạo user mới
+        const newUser = new User({
+            cccd,
+            password: hashedPassword, // Lưu mật khẩu đã mã hóa
+            fullName,
+            dob,
+            gender,
+            address,
+            email,
+            phone
+        });
+
+        // 5. Lưu vào Database
+        await newUser.save();
+
+        // 6. Phản hồi về Android (Khớp với check status == "success" của bạn)
+        res.status(201).json({
+            status: 'success',
+            message: 'Đăng ký tài khoản thành công!'
+        });
+
+    } catch (error) {
+        console.error("Lỗi đăng ký:", error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Lỗi server: ' + error.message
         });
     }
 };
-
-module.exports = { registerUser };
