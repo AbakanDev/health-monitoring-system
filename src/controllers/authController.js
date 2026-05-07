@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const pool = require('../config/db');
 const bcrypt = require('bcryptjs');
 
 exports.register = async (req, res) => {
