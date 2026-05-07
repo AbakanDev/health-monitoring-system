@@ -1,20 +1,12 @@
 const bcrypt = require('bcryptjs');
-const User = require('../models/User');
+// Hãy chắc chắn đường dẫn này đúng và file là User.js
+const User = require('../models/User'); 
 
 exports.register = async (req, res) => {
     try {
-        const {
-            cccd,
-            password,
-            fullName,
-            dob,
-            gender,
-            address,
-            email,
-            phone
-        } = req.body;
+        const { cccd, password, fullName, dob, gender, address, email, phone } = req.body;
 
-        // check CCCD tồn tại
+        // Check tồn tại
         const existingUser = await User.findByCCCD(cccd);
 
         if (existingUser) {
@@ -24,11 +16,11 @@ exports.register = async (req, res) => {
             });
         }
 
-        // hash password
+        // Hash mật khẩu
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // lưu mysql
+        // Lưu vào MySQL thông qua Model User
         await User.create({
             cccd,
             password: hashedPassword,
@@ -47,7 +39,6 @@ exports.register = async (req, res) => {
 
     } catch (error) {
         console.error("Lỗi đăng ký:", error);
-
         res.status(500).json({
             status: 'error',
             message: 'Lỗi server: ' + error.message

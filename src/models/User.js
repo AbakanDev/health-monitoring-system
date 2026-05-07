@@ -12,9 +12,10 @@ const User = {
     create: async (userData) => {
         const { cccd, password, fullName, dob, gender, address, email, phone } = userData;
 
+        // FIX: Tên cột phải khớp với CREATE TABLE (full_name, password_hash)
         const [result] = await pool.execute(
             `INSERT INTO users 
-            (cccd, password, fullName, dob, gender, address, email, phone) 
+            (cccd, password_hash, full_name, dob, gender, address, email, phone) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
             [cccd, password, fullName, dob, gender, address, email, phone]
         );
