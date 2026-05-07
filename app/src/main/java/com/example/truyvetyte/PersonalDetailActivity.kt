@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
-
+import android.content.Intent
 class PersonalDetailActivity : AppCompatActivity() {
 
     // 2 biến này sẽ hứng dữ liệu từ màn hình trước truyền sang
@@ -104,18 +104,28 @@ class PersonalDetailActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful && response.body()?.status == "success") {
-                        Toast.makeText(this@PersonalDetailActivity, "Tạo tài khoản thành công!", Toast.LENGTH_LONG).show()
-                        // Thành công thì chuyển về LoginActivity hoặc màn hình chính
-                        // val intent = Intent(this@PersonalDetailActivity, LoginActivity::class.java)
-                        // startActivity(intent)
-                        // finishAffinity() // Xóa lịch sử màn hình đăng ký
+                        // Chuyển sang màn hình thành công
+                        val intent = Intent(this@PersonalDetailActivity, RegisterSuccessActivity::class.java)
+                        startActivity(intent)
+                        finish()
                     } else {
-                        Toast.makeText(this@PersonalDetailActivity, "Lỗi: ${response.body()?.message}", Toast.LENGTH_LONG).show()
+                        // Xử lý lỗi trả về từ Server (ví dụ: Trùng CCCD, lỗi SQL...)
+                        var errorMessage = "Lỗi hệ thống"
+                        try {
+                            val errorString = response.errorBody()?.string()
+                            if (errorString != null) {
+                                val jsonObject = org.json.JSONObject(errorString)
+                                errorMessage = jsonObject.getString("message")
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        Toast.makeText(this@PersonalDetailActivity, errorMessage, Toast.LENGTH_LONG).show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@PersonalDetailActivity, "Lỗi kết nối mạng: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@PersonalDetailActivity, "Lỗi kết nối: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
