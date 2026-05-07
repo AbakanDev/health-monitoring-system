@@ -1,40 +1,26 @@
-const mongoose = require('mongoose');
+const pool = require('../config/db');
 
-const userSchema = new mongoose.Schema({
-    cccd: {
-        type: String,
-        required: true,
-        unique: true, // Không cho phép trùng CCCD
-        trim: true
+const User = {
+    findByCCCD: async (cccd) => {
+        const [rows] = await pool.execute(
+            'SELECT * FROM users WHERE cccd = ?',
+            [cccd]
+        );
+        return rows[0];
     },
-    password: {
-        type: String,
-        required: true
-    },
-    fullName: {
-        type: String,
-        required: true
-    },
-    dob: {
-        type: String, // Có thể đổi thành Date nếu muốn
-        required: true
-    },
-    gender: {
-        type: String,
-        required: true
-    },
-    address: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        trim: true
-    },
-    phone: {
-        type: String,
-        required: true
+
+    create: async (userData) => {
+        const { cccd, password, fullName, dob, gender, address, email, phone } = userData;
+
+        const [result] = await pool.execute(
+            `INSERT INTO users 
+            (cccd, password, fullName, dob, gender, address, email, phone) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [cccd, password, fullName, dob, gender, address, email, phone]
+        );
+
+        return result;
     }
-}, { timestamps: true }); // Tự động thêm createdAt và updatedAt
+};
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = User;
