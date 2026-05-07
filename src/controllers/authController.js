@@ -24,7 +24,7 @@ exports.register = async (req, res) => {
         await User.create({
             cccd,
             password: hashedPassword,
-            fullName,
+            full_name,
             dob,
             gender,
             address,
