@@ -72,4 +72,60 @@ exports.register = async (req, res) => {
             message: 'Lỗi server nội bộ: ' + error.message
         });
     }
+    exports.login = async (req, res) => {
+    console.log(">>> DỮ LIỆU ĐĂNG NHẬP GỬI LÊN:", req.body);
+
+    try {
+        const cccd = req.body.cccd;
+        const password = req.body.password;
+
+        // 1. Kiểm tra đầu vào (validation cơ bản)
+        if (!cccd || !password) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Vui lòng nhập đầy đủ CCCD và Mật khẩu!'
+            });
+        }
+
+        // 2. Tìm người dùng theo CCCD
+        const user = await User.findByCCCD(cccd);
+
+        if (!user) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Tài khoản (CCCD) này chưa được đăng ký!'
+            });
+        }
+
+        // 3. So sánh mật khẩu (bcrypt tự động giải mã và so sánh)
+        // Lưu ý: Mình dùng user.password vì ở hàm register bạn lưu là password: hashedPassword
+        // Nếu trong DB cột tên là password_hash, hãy đổi thành user.password_hash nhé
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(401).json({
+                status: 'error',
+                message: 'Mật khẩu không chính xác!'
+            });
+        }
+
+        // 4. Đăng nhập thành công
+        // (Tùy chọn) Xóa field password trước khi gửi data về Android để bảo mật
+        const userResponse = { ...user };
+        delete userResponse.password; 
+
+        res.status(200).json({
+            status: 'success',
+            message: 'Đăng nhập thành công!',
+            data: userResponse // Gửi kèm thông tin user về Android (để lưu vào SharedPreferences sau này)
+        });
+
+    } catch (error) {
+        console.error("Lỗi đăng nhập MySQL:", error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Lỗi server nội bộ: ' + error.message
+        });
+    }
+};
 };
