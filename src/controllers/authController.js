@@ -72,7 +72,9 @@ exports.register = async (req, res) => {
             message: 'Lỗi server nội bộ: ' + error.message
         });
     }
-    exports.login = async (req, res) => {
+}; // <--- [SỬA Ở ĐÂY]: Đóng ngoặc hàm register tại đây.
+
+exports.login = async (req, res) => {
     console.log(">>> DỮ LIỆU ĐĂNG NHẬP GỬI LÊN:", req.body);
 
     try {
@@ -127,5 +129,4 @@ exports.register = async (req, res) => {
             message: 'Lỗi server nội bộ: ' + error.message
         });
     }
-};
-};
+}; // <--- [SỬA Ở ĐÂY]: Đã xóa bớt 1 dấu } dư thừa.
