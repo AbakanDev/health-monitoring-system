@@ -100,9 +100,8 @@ exports.login = async (req, res) => {
         }
 
         // 3. So sánh mật khẩu (bcrypt tự động giải mã và so sánh)
-        // Lưu ý: Mình dùng user.password vì ở hàm register bạn lưu là password: hashedPassword
-        // Nếu trong DB cột tên là password_hash, hãy đổi thành user.password_hash nhé
-        const isMatch = await bcrypt.compare(password, user.password);
+
+        const isMatch = await bcrypt.compare(password, user.password_hash);
 
         if (!isMatch) {
             return res.status(401).json({
@@ -112,7 +111,6 @@ exports.login = async (req, res) => {
         }
 
         // 4. Đăng nhập thành công
-        // (Tùy chọn) Xóa field password trước khi gửi data về Android để bảo mật
         const userResponse = { ...user };
         delete userResponse.password; 
 
