@@ -113,7 +113,8 @@ exports.login = async (req, res) => {
         // 4. Đăng nhập thành công
         const userResponse = { ...user };
         delete userResponse.password; 
-
+        console.log(">>> KIỂM TRA DỮ LIỆU TỪ DB:", userResponse);
+        
         res.status(200).json({
             status: 'success',
             message: 'Đăng nhập thành công!',
