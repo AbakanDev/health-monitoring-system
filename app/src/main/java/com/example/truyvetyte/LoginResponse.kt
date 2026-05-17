@@ -1,17 +1,15 @@
-package com.example.truyvetyte.model
+package com.example.truyvetyte
 
 import com.google.gson.annotations.SerializedName
 
 data class LoginResponse(
-    val status: String,
     val message: String,
+    val token: String?,
     val data: UserData?
 )
 
 data class UserData(
-    val cccd: String,
-    @SerializedName("full_name")
-    val fullName: String?,
-    val email: String?,
-    val phone: String?
+    val MaNguoiDung: Int,
+    val HoTen: String,
+    val MaVaiTro: String
 )

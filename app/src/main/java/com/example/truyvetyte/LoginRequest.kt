@@ -1,6 +1,6 @@
-package com.example.truyvetyte.model
+package com.example.truyvetyte
 
 data class LoginRequest(
-    val cccd: String,
-    val password: String
+    val TenDangNhap: String,
+    val MatKhau: String
 )

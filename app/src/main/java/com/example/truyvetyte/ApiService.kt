@@ -1,9 +1,9 @@
 package com.example.truyvetyte.network
 
+import com.example.truyvetyte.LoginRequest
 import com.example.truyvetyte.model.RegisterRequest
 import com.example.truyvetyte.model.RegisterResponse
-import com.example.truyvetyte.model.LoginRequest
-import com.example.truyvetyte.model.LoginResponse
+import com.example.truyvetyte.LoginResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
