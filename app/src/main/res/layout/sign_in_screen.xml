@@ -5,7 +5,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/bluemint">
-<!-- Lớp nền trắng bo góc bên dưới -->
+
+    <!-- Lớp nền trắng bo góc bên dưới -->
     <View
             android:id="@+id/bgWhiteForm"
             android:layout_width="0dp"
@@ -35,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="TÀI KHOẢN MẬT KHẨU"
+            android:text="TẠO TÀI KHOẢN"
             android:textColor="@color/darkbluemint"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -43,9 +44,9 @@
             app:layout_constraintStart_toEndOf="@id/btnBack"
             app:layout_constraintTop_toTopOf="@id/btnBack" />
 
-    <!-- 1. Tên Đăng Nhập -->
+    <!-- 1. Căn cước công dân -->
     <TextView
-            android:id="@+id/labelUsername"
+            android:id="@+id/labelCccd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -58,15 +59,16 @@
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
     <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/edtUsername"
+            android:id="@+id/edtCccd"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/img_blue_round_bg_login"
             android:backgroundTint="@null"
-            android:hint="0777777777777"
-            android:inputType="textNoSuggestions"
+            android:hint="079123456789"
+            android:inputType="number"
+            android:maxLength="12"
             android:paddingHorizontal="24dp"
             android:textColor="@color/darkbluemint"
             android:textColorHint="@color/darklightbluemint"
@@ -74,7 +76,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/labelUsername" />
+            app:layout_constraintTop_toBottomOf="@id/labelCccd" />
 
     <!-- 2. Mật khẩu -->
     <TextView
@@ -88,7 +90,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edtUsername" />
+            app:layout_constraintTop_toBottomOf="@id/edtCccd" />
 
     <!-- Lưu ý: inputType="textPassword" để ẩn ký tự khi gõ -->
     <androidx.appcompat.widget.AppCompatEditText

@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:background="@color/bluemint">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/img_bg_white"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="24dp">
+
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tổng Quan Khu Vực"
+                android:textColor="#5BB8C4"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="25dp" />
+
+
+        <!-- KHỐI TỔNG QUAN -->
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:layout_marginBottom="8dp">
+
+
+            <!-- Thẻ Khu Vực Nguy Hiểm (Trái) -->
+            <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    app:cardUseCompatPadding="true">
+
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="16dp">
+
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Khu Vực Nguy Hiểm"
+                            android:textColor="#D797F0"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:layout_marginBottom="8dp"/>
+
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="5"
+                            android:textColor="#B355DB"
+                            android:textSize="60sp"
+                            android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <!-- Cột phải (Nguy Cơ và An Toàn) -->
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+                <!-- Thẻ Khu Vực Nguy Cơ -->
+                <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true">
+
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Khu Vực Nguy Cơ"
+                                android:textColor="#B388FF"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="3"
+                                android:textColor="#8C54FF"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
+                <!-- Thẻ Khu Vực An Toàn -->
+                <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true">
+
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Khu Vực An Toàn"
+                                android:textColor="#90CAF9"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2"
+                                android:textColor="#42A5F5"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <!-- Thẻ Tổng Lượt Check-In -->
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true"
+                android:layout_marginBottom="24dp">
+
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="16dp">
+
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Tổng Lượt Check-In"
+                        android:textColor="#82B1FF"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10"
+                        android:textColor="#5C94F0"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- Tiêu đề: Lịch Sử Check - In -->
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp">
+
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="Lịch Sử Check - In"
+                    android:textColor="#5BB8C4"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="Xem tất cả"
+                    android:textColor="#64B5F6"
+                    android:textSize="18sp" />
+        </RelativeLayout>
+
+
+        <!-- DANH SÁCH LỊCH SỬ CHECK-IN -->
+
+
+        <!-- Item 1: An Toàn -->
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                app:cardUseCompatPadding="true">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <View android:layout_width="6dp" android:layout_height="match_parent" android:background="#81C784" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="12dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nhà Hàng Hồ Tây" android:textColor="#64B5F6" android:textStyle="bold" android:textSize="20sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="21/3/2026 - 12h00" android:textColor="#90CAF9" android:textSize="18sp" android:layout_marginTop="2dp"/>
+                    </LinearLayout>
+                    <!-- Nhãn An Toàn -->
+                    <androidx.cardview.widget.CardView android:layout_width="50dp" android:layout_height="40dp" app:cardCornerRadius="6dp" app:cardElevation="0dp" app:cardBackgroundColor="#A5D6A7">
+                        <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="An\nToàn" android:textColor="#2E7D32" android:textStyle="bold" android:textSize="15sp" android:gravity="center" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- Item 2: Nguy Hiểm -->
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                app:cardUseCompatPadding="true">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <!-- Thanh màu đỏ -->
+                <View android:layout_width="6dp" android:layout_height="match_parent" android:background="#E53935" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="12dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Siêu Thị WinMart" android:textColor="#64B5F6" android:textStyle="bold" android:textSize="20sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="21/3/2026 - 5h30" android:textColor="#90CAF9" android:textSize="18sp" android:layout_marginTop="2dp"/>
+                    </LinearLayout>
+                    <!-- Nhãn Nguy Hiểm -->
+                    <androidx.cardview.widget.CardView android:layout_width="50dp" android:layout_height="40dp" app:cardCornerRadius="6dp" app:cardElevation="0dp" app:cardBackgroundColor="#EF9A9A">
+                        <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="Nguy\nHiểm" android:textColor="#C62828" android:textStyle="bold" android:textSize="15sp" android:gravity="center" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- Item 3: Nguy Cơ -->
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                app:cardUseCompatPadding="true">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <!-- Thanh màu vàng -->
+                <View android:layout_width="6dp" android:layout_height="match_parent" android:background="#FFF176" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="12dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Khu Vui Chơi Đầm Sen" android:textColor="#64B5F6" android:textStyle="bold" android:textSize="20sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="21/3/2026 - 8h" android:textColor="#90CAF9" android:textSize="18sp" android:layout_marginTop="2dp"/>
+                    </LinearLayout>
+                    <!-- Nhãn Nguy Cơ -->
+                    <androidx.cardview.widget.CardView android:layout_width="50dp" android:layout_height="40dp" app:cardCornerRadius="6dp" app:cardElevation="0dp" app:cardBackgroundColor="#FFF59D">
+                        <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="Nguy\nCơ" android:textColor="#F57F17" android:textStyle="bold" android:textSize="15sp" android:gravity="center" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- Item 4: Nguy Cơ -->
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                app:cardUseCompatPadding="true">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <!-- Thanh màu vàng -->
+                <View android:layout_width="6dp" android:layout_height="match_parent" android:background="#FFF176" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="12dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Công Viên Hoàng Văn Thụ" android:textColor="#64B5F6" android:textStyle="bold" android:textSize="20sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="21/3/2026 - 4h" android:textColor="#90CAF9" android:textSize="18sp" android:layout_marginTop="2dp"/>
+                    </LinearLayout>
+                    <!-- Nhãn Nguy Cơ -->
+                    <androidx.cardview.widget.CardView android:layout_width="50dp" android:layout_height="40dp" app:cardCornerRadius="6dp" app:cardElevation="0dp" app:cardBackgroundColor="#FFF59D">
+                        <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="Nguy\nCơ" android:textColor="#F57F17" android:textStyle="bold" android:textSize="15sp" android:gravity="center" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+</ScrollView>
+

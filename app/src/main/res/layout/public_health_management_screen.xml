@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:background="#42C2FF">
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/img_bg_white"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="24dp">
+
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hồ Sơ Quản Lý Dịch Tễ"
+                android:textColor="@color/darkbluemint"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tiêm Chủng"
+                android:textColor="#64B5F6"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+
+        <androidx.cardview.widget.CardView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="#4CAF50"
+                android:layout_marginBottom="24dp">
+
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingVertical="20dp">
+
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CHỨNG NHẬN"
+                        android:textColor="#FFFFFF"
+                        android:textSize="20sp" />
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="THẺ XANH"
+                        android:textColor="#FFFFFF"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:textColor="#FFFFFF"
+                        android:textSize="64sp"
+                        android:textStyle="bold"
+                        android:includeFontPadding="false" />
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SỐ MŨI"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- LỊCH SỬ TIÊM CHỦNG -->
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                android:layout_marginBottom="24dp">
+
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                <!-- Header của List -->
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#4DD0E1"
+                        android:padding="12dp">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lịch sử tiêm chủng cá nhân"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Xem tất cả"
+                            android:textColor="#E0F7FA"
+                            android:textSize="15sp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+
+                <!-- Item Mũi 2 -->
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp">
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mũi 2" android:textColor="#64B5F6" android:textStyle="bold" android:textSize="20sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pfizer" android:textColor="#90CAF9" android:textSize="15sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bệnh viện Tân Bình TP.HCM" android:textColor="#90CAF9" android:textSize="15sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1/2/2026 - 12h00" android:textColor="#90CAF9" android:textSize="15sp" android:layout_alignParentEnd="true"/>
+                </RelativeLayout>
+
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0" android:layout_marginHorizontal="12dp"/>
+
+
+                <!-- Item Mũi 1 -->
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp">
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mũi 1" android:textColor="#64B5F6" android:textStyle="bold" android:textSize="20sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Zeneca" android:textColor="#90CAF9" android:textSize="15sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bệnh viện Thống Nhất TP.HCM" android:textColor="#90CAF9" android:textSize="15sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1/1/2026 - 12h00" android:textColor="#90CAF9" android:textSize="15sp" android:layout_alignParentEnd="true"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- Tiêu đề Phần 2 -->
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tình Trạng Cách Ly"
+                android:textColor="#64B5F6"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp" />
+
+
+        <!-- THẺ CÁCH LY -->
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                android:layout_marginBottom="24dp">
+
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TIẾN TRÌNH CÁCH LY"
+                        android:textColor="#E4C15A"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_marginBottom="20dp"/>
+
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tiến trình cách ly"
+                        android:textColor="#E4C15A"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="4dp"/>
+
+
+                <!-- Thanh Progress Bar Giả (Dùng View weights) -->
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:orientation="horizontal"
+                        android:background="#F0F0F0">
+                    <View android:layout_width="0dp" android:layout_weight="0.75" android:layout_height="match_parent" android:background="#E4C15A"/>
+                    <View android:layout_width="0dp" android:layout_weight="0.25" android:layout_height="match_parent"/>
+                </LinearLayout>
+
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="12/10/2025" android:textColor="#E4C15A" android:textSize="15sp" android:layout_alignParentStart="true"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="19/10/2025" android:textColor="#E4C15A" android:textSize="15sp" android:layout_alignParentEnd="true"/>
+                </RelativeLayout>
+
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Còn 06 ngày còn lại"
+                        android:textColor="#E4C15A"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_marginTop="16dp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- Tiêu đề Phần 3 -->
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tình Trạng Xét Nghiệm"
+                android:textColor="#64B5F6"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp" />
+
+
+        <!-- KẾT QUẢ MỚI NHẤT -->
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="3dp"
+                android:layout_marginBottom="16dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <View android:layout_width="6dp" android:layout_height="match_parent" android:background="#EF5350" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="KẾT QUẢ MỚI NHẤT" android:textColor="#EF5350" android:textSize="12sp" android:textStyle="bold"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DƯƠNG TÍNH" android:textColor="#EF5350" android:textSize="24sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Lần 2" android:textColor="#EF5350" android:textSize="16sp" android:textStyle="bold"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1/2/2026 - 12h00" android:textColor="#EF5350" android:textSize="15sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- LỊCH SỬ XÉT NGHIỆM -->
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp">
+
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                <!-- Header của List -->
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#4DD0E1"
+                        android:padding="12dp">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lịch sử xét nghiệm cá nhân"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Xem tất cả"
+                            android:textColor="#E0F7FA"
+                            android:textSize="15sp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+
+                <!-- Item Xét Nghiệm 2 -->
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp">
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Lần 2" android:textColor="#64B5F6" android:textStyle="bold" android:textSize="20sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PCR" android:textColor="#90CAF9" android:textSize="15sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bệnh viện Tân Bình TP.HCM" android:textColor="#90CAF9" android:textSize="15sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="end" android:layout_alignParentEnd="true">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1/2/2026 - 12h00" android:textColor="#90CAF9" android:textSize="15sp" android:layout_marginBottom="8dp"/>
+                        <androidx.cardview.widget.CardView android:layout_width="wrap_content" android:layout_height="wrap_content" app:cardCornerRadius="12dp" app:cardBackgroundColor="#EF5350" app:cardElevation="0dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Dương Tính" android:textColor="#FFFFFF" android:textSize="15sp" android:textStyle="bold" android:paddingHorizontal="16dp" android:paddingVertical="6dp"/>
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0" android:layout_marginHorizontal="12dp"/>
+
+
+                <!-- Item Xét Nghiệm 1 -->
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp">
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Lần 1" android:textColor="#64B5F6" android:textStyle="bold" android:textSize="20sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PCR" android:textColor="#90CAF9" android:textSize="15sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bệnh viện Thống Nhất TP.HCM" android:textColor="#90CAF9" android:textSize="15sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="end" android:layout_alignParentEnd="true">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1/1/2026 - 12h00" android:textColor="#90CAF9" android:textSize="15sp" android:layout_marginBottom="8dp"/>
+                        <androidx.cardview.widget.CardView android:layout_width="wrap_content" android:layout_height="wrap_content" app:cardCornerRadius="12dp" app:cardBackgroundColor="#4CAF50" app:cardElevation="0dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Âm Tính" android:textColor="#FFFFFF" android:textSize="15sp" android:textStyle="bold" android:paddingHorizontal="16dp" android:paddingVertical="6dp"/>
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+</ScrollView>

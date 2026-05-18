@@ -6,5 +6,6 @@
     <color name="darkbluemint">#4BB1CA</color>
     <color name="lightbluemint">#C2EFFF</color>
     <color name="darklightbluemint">#996BBEDB</color>
-
+    <color name="bluewithcheckbox">#7FB2FF</color>
+    <color name="bluelightgreen">#4BB1CA</color>
 </resources>

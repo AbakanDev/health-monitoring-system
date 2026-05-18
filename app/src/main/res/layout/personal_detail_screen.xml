@@ -127,13 +127,16 @@
                             android:backgroundTint="@null"
                             android:drawableEnd="@drawable/img_calendar"
                             android:drawablePadding="8dp"
-                            android:hint="MM/DD/YY"
+                            android:hint="DD/MM/YY"
                             android:inputType="date"
                             android:paddingHorizontal="16dp"
                             android:textColor="@color/darkbluemint"
                             android:textStyle="bold"
                             android:textColorHint="@color/darklightbluemint"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:focusable="false"
+                            android:clickable="true"
+                            android:cursorVisible="false"/>
                 </LinearLayout>
 
                 <!-- Khoảng cách giữa 2 cột -->
