@@ -27,12 +27,15 @@ const login = async (req, res) => {
             return res.status(401).json({ message: 'Mật khẩu không chính xác!' });
         }
 
-        // 4. Lấy thêm thông tin HoTen từ bảng NGUOIDUNG để hiển thị trên App
+        // 4. Lấy thêm thông tin HoTen và CCCD từ bảng NGUOIDUNG để hiển thị trên App
+        // SỬA Ở ĐÂY: Thêm cột CCCD vào câu lệnh SELECT
         const [userDetails] = await pool.query(
-            'SELECT HoTen FROM NGUOIDUNG WHERE MaNguoiDung = ?',
+            'SELECT HoTen, CCCD FROM NGUOIDUNG WHERE MaNguoiDung = ?',
             [user.MaNguoiDung]
         );
         const hoTen = userDetails.length > 0 ? userDetails[0].HoTen : 'Unknown';
+        // SỬA Ở ĐÂY: Tạo biến cccd để hứng dữ liệu
+        const cccd = userDetails.length > 0 ? userDetails[0].CCCD : ''; 
 
         // 5. Tạo Token (Thẻ thông hành phiên đăng nhập)
         const token = jwt.sign(
@@ -53,7 +56,8 @@ const login = async (req, res) => {
             data: {
                 MaNguoiDung: user.MaNguoiDung,
                 HoTen: hoTen,
-                MaVaiTro: user.MaVaiTro
+                MaVaiTro: user.MaVaiTro,
+                CCCD: cccd 
             }
         });
 
