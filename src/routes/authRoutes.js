@@ -6,4 +6,7 @@ const authController = require('../controllers/authController');
 router.post('/login', authController.login);
 router.post('/register', authController.register);
 
+// THÊM DÒNG NÀY: Khai báo API lấy dữ liệu tiêm chủng
+router.get('/tiemchung/:cccd', authController.getThongTinTiemChung);
+
 module.exports = router;
