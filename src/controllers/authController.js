@@ -63,6 +63,75 @@ const login = async (req, res) => {
     }
 };
 
+const register = async (req, res) => {
+    // Nhận các trường dữ liệu từ Android gửi lên
+    const { HoTen, CCCD, NgaySinh, GioiTinh, SDT, DiaChi, Email, MatKhau } = req.body;
+
+    // 1. Kiểm tra các trường bắt buộc để tránh crash DB
+    if (!HoTen || !CCCD || !MatKhau) {
+        return res.status(400).json({ message: 'Vui lòng điền đầy đủ thông tin bắt buộc (Họ tên, CCCD, Mật khẩu)!' });
+    }
+
+    // Tên đăng nhập giống hệt CCCD theo yêu cầu của ông
+    const TenDangNhap = CCCD; 
+
+    // Xin cấp một kết nối (connection) từ pool để chạy Transaction
+    const connection = await pool.getConnection();
+
+    try {
+        // Bắt đầu Transaction (giao dịch)
+        await connection.beginTransaction();
+
+        // 2. Insert thông tin vào bảng NGUOIDUNG trước
+        const queryNguoiDung = `
+            INSERT INTO NGUOIDUNG (HoTen, CCCD, NgaySinh, GioiTinh, SDT, DiaChi, Email) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        `;
+        const [resultNguoiDung] = await connection.query(queryNguoiDung, [
+            HoTen, CCCD, NgaySinh, GioiTinh, SDT, DiaChi, Email
+        ]);
+
+        // Lấy MaNguoiDung tự động tăng vừa được sinh ra từ bảng NGUOIDUNG
+        const maNguoiDungMoi = resultNguoiDung.insertId;
+
+        // 3. Dùng MaNguoiDung đó để insert tiếp vào bảng TAIKHOAN (Lưu mật khẩu trực tiếp)
+        const queryTaiKhoan = `
+            INSERT INTO TAIKHOAN (TenDangNhap, MatKhau, MaNguoiDung) 
+            VALUES (?, ?, ?)
+        `;
+        await connection.query(queryTaiKhoan, [
+            TenDangNhap, MatKhau, maNguoiDungMoi
+        ]);
+
+        // 4. Nếu cả 2 lệnh trên thành công, xác nhận lưu vĩnh viễn vào DB
+        await connection.commit();
+
+        return res.status(201).json({
+            message: 'Đăng ký tài khoản thành công!',
+            data: {
+                TenDangNhap: TenDangNhap,
+                HoTen: HoTen
+            }
+        });
+
+    } catch (error) {
+        // Nếu có bất kỳ lỗi nào xảy ra trong block `try`, hủy bỏ lệnh chèn của cả 2 bảng
+        await connection.rollback();
+        console.error('Lỗi khi đăng ký:', error);
+
+        // Bắt lỗi trùng CCCD hoặc trùng Tên đăng nhập (Ràng buộc UNIQUE trong SQL)
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(409).json({ message: 'Tài khoản hoặc Số căn cước công dân đã tồn tại trên hệ thống!' });
+        }
+
+        return res.status(500).json({ message: 'Lỗi server nội bộ' });
+    } finally {
+        // Luôn luôn giải phóng kết nối trả lại cho pool để không bị nghẽn DB
+        connection.release();
+    }
+};
+
 module.exports = {
-    login
+    login,
+    register
 };
