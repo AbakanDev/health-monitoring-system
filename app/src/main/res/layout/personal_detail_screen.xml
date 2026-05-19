@@ -57,18 +57,33 @@
                     app:layout_constraintTop_toTopOf="@id/btnBack" />
 
             <!-- 1. Tên Đầy Đủ -->
-            <TextView
+            <LinearLayout
                     android:id="@+id/labelName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="24dp"
-                    android:text="Tên Đầy Đủ"
-                    android:textColor="@color/darkbluemint"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
+                    android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+                    app:layout_constraintTop_toBottomOf="@id/tvTitle">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tên Đầy Đủ"
+                        android:textColor="@color/darkbluemint"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="*"
+                        android:textColor="#FF0000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edtFullName"
@@ -109,14 +124,29 @@
                         android:layout_weight="5.5"
                         android:orientation="vertical">
 
-                    <TextView
+                    <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:text="Ngày Tháng Năm Sinh"
-                            android:textColor="@color/darkbluemint"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:orientation="horizontal">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ngày Tháng Năm Sinh"
+                                android:textColor="@color/darkbluemint"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:text="*"
+                                android:textColor="#FF0000"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                    </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/edtDob"
@@ -151,14 +181,29 @@
                         android:layout_weight="4.5"
                         android:orientation="vertical">
 
-                    <TextView
+                    <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:text="Giới tính"
-                            android:textColor="@color/darkbluemint"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:orientation="horizontal">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Giới tính"
+                                android:textColor="@color/darkbluemint"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:text="*"
+                                android:textColor="#FF0000"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                    </LinearLayout>
 
                     <RadioGroup
                             android:id="@+id/rgGender"
@@ -193,18 +238,33 @@
             </LinearLayout>
 
             <!-- 3. Địa chỉ nhà ở -->
-            <TextView
+            <LinearLayout
                     android:id="@+id/labelAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
-                    android:text="Địa chỉ nhà ở"
-                    android:textColor="@color/darkbluemint"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
+                    android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rowDobGender" />
+                    app:layout_constraintTop_toBottomOf="@id/rowDobGender">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Địa chỉ nhà ở"
+                        android:textColor="@color/darkbluemint"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="*"
+                        android:textColor="#FF0000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edtAddress"
@@ -226,18 +286,33 @@
                     app:layout_constraintTop_toBottomOf="@id/labelAddress" />
 
             <!-- 4. Email -->
-            <TextView
+            <LinearLayout
                     android:id="@+id/labelEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
-                    android:text="Email"
-                    android:textColor="@color/darkbluemint"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
+                    android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/edtAddress" />
+                    app:layout_constraintTop_toBottomOf="@id/edtAddress">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:textColor="@color/darkbluemint"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="*"
+                        android:textColor="#FF0000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edtEmail"
@@ -258,18 +333,33 @@
                     app:layout_constraintTop_toBottomOf="@id/labelEmail" />
 
             <!-- 5. Số điện thoại -->
-            <TextView
+            <LinearLayout
                     android:id="@+id/labelPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
-                    android:text="Số điện thoại:"
-                    android:textColor="@color/darkbluemint"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
+                    android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/edtEmail" />
+                    app:layout_constraintTop_toBottomOf="@id/edtEmail">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số điện thoại:"
+                        android:textColor="@color/darkbluemint"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="*"
+                        android:textColor="#FF0000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edtPhone"
