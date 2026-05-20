@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -16,10 +17,14 @@ import com.example.truyvetyte.network.RetrofitClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class DichTe : Fragment() {
 
-    // Khai báo các view cần tương tác
+    // --- Khai báo View Tiêm Chủng ---
     private lateinit var cvTheTiemChung: CardView
     private lateinit var tvLoaiThe: TextView
     private lateinit var tvSoMuiTiem: TextView
@@ -34,8 +39,19 @@ class DichTe : Fragment() {
     private lateinit var tvTenVaccineMui2: TextView
     private lateinit var tvDiaDiemMui2: TextView
     private lateinit var tvNgayTiemMui2: TextView
-
     private lateinit var dividerTiemChung: View
+
+    // --- Khai báo View Cách Ly ---
+    private lateinit var viewProgressCachLy: View
+    private lateinit var viewProgressCachLyRemain: View
+    private lateinit var tvNgayBatDauCachLy: TextView
+    private lateinit var tvNgayKetThucCachLy: TextView
+    private lateinit var tvSoNgayConLai: TextView
+
+    // --- Khai báo View Xét Nghiệm (Bổ sung để đủ ID) ---
+    private lateinit var tvTrangThaiXetNghiem: TextView
+    private lateinit var tvLanXetNghiemMoiNhat: TextView
+    private lateinit var tvNgayXetNghiemMoiNhat: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,13 +62,15 @@ class DichTe : Fragment() {
         // Ánh xạ View
         initViews(view)
 
-        // Gọi API lấy dữ liệu
+        // Gọi API lấy dữ liệu tiêm chủng
         fetchTiemChungData()
+        fetchCachLyData()
 
         return view
     }
 
     private fun initViews(view: View) {
+        // Tiêm chủng
         cvTheTiemChung = view.findViewById(R.id.cvTheTiemChung)
         tvLoaiThe = view.findViewById(R.id.tvLoaiThe)
         tvSoMuiTiem = view.findViewById(R.id.tvSoMuiTiem)
@@ -67,10 +85,76 @@ class DichTe : Fragment() {
         tvTenVaccineMui2 = view.findViewById(R.id.tvTenVaccineMui2)
         tvDiaDiemMui2 = view.findViewById(R.id.tvDiaDiemMui2)
         tvNgayTiemMui2 = view.findViewById(R.id.tvNgayTiemMui2)
-
         dividerTiemChung = view.findViewById(R.id.dividerTiemChung)
+
+        // Cách ly
+        viewProgressCachLy = view.findViewById(R.id.viewProgressCachLy)
+        viewProgressCachLyRemain = view.findViewById(R.id.viewProgressCachLyRemain)
+        tvNgayBatDauCachLy = view.findViewById(R.id.tvNgayBatDauCachLy)
+        tvNgayKetThucCachLy = view.findViewById(R.id.tvNgayKetThucCachLy)
+        tvSoNgayConLai = view.findViewById(R.id.tvSoNgayConLai)
+
+        // Xét nghiệm
+        tvTrangThaiXetNghiem = view.findViewById(R.id.tvTrangThaiXetNghiem)
+        tvLanXetNghiemMoiNhat = view.findViewById(R.id.tvLanXetNghiemMoiNhat)
+        tvNgayXetNghiemMoiNhat = view.findViewById(R.id.tvNgayXetNghiemMoiNhat)
     }
 
+    // ================= LOGIC XỬ LÝ CÁCH LY =================
+    private fun updateTrangThaiCachLy(ngayBatDauStr: String, ngayKetThucStr: String) {
+        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        try {
+            val ngayBatDau = sdf.parse(ngayBatDauStr)
+            val ngayKetThuc = sdf.parse(ngayKetThucStr)
+            val homNay = Date() // Lấy thời gian hiện tại lúc mở app
+
+            if (ngayBatDau != null && ngayKetThuc != null) {
+                val totalTime = ngayKetThuc.time - ngayBatDau.time
+                val passedTime = homNay.time - ngayBatDau.time
+
+                val totalDays = TimeUnit.MILLISECONDS.toDays(totalTime).toFloat()
+                val passedDays = TimeUnit.MILLISECONDS.toDays(passedTime).toFloat()
+
+                // Tính phần trăm tiến độ
+                var percent = (passedDays / totalDays) * 100f
+                if (percent < 0f) percent = 0f
+                if (percent > 100f) percent = 100f
+
+                val remainDays = (totalDays - passedDays).toInt()
+
+                // Cập nhật text ngày tháng
+                tvNgayBatDauCachLy.text = ngayBatDauStr
+                tvNgayKetThucCachLy.text = ngayKetThucStr
+
+                // Cập nhật trạng thái số ngày
+                if (remainDays > 0) {
+                    tvSoNgayConLai.text = "Còn $remainDays ngày còn lại"
+                    tvSoNgayConLai.setTextColor(Color.parseColor("#E4C15A")) // Giữ màu vàng
+                } else if (remainDays == 0) {
+                    tvSoNgayConLai.text = "Ngày cuối cùng cách ly"
+                    tvSoNgayConLai.setTextColor(Color.parseColor("#4CAF50"))
+                } else {
+                    tvSoNgayConLai.text = "Đã hoàn thành cách ly"
+                    tvSoNgayConLai.setTextColor(Color.parseColor("#4CAF50")) // Đổi xanh khi xong
+                    percent = 100f
+                }
+
+                // Cập nhật độ dài của thanh Progress giả lập bằng layout_weight
+                val paramsProgress = viewProgressCachLy.layoutParams as LinearLayout.LayoutParams
+                paramsProgress.weight = percent
+                viewProgressCachLy.layoutParams = paramsProgress
+
+                val paramsRemain = viewProgressCachLyRemain.layoutParams as LinearLayout.LayoutParams
+                paramsRemain.weight = 100f - percent
+                viewProgressCachLyRemain.layoutParams = paramsRemain
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Xử lý lỗi parse ngày nếu sai format
+        }
+    }
+
+    // ================= LOGIC XỬ LÝ TIÊM CHỦNG (Giữ nguyên) =================
     private fun fetchTiemChungData() {
         val sharedPreferences = requireActivity().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("TOKEN", null)
@@ -81,7 +165,6 @@ class DichTe : Fragment() {
             return
         }
 
-        // Tạo bearer token
         val bearerToken = "Bearer $token"
 
         lifecycleScope.launch(Dispatchers.IO) {
@@ -104,8 +187,62 @@ class DichTe : Fragment() {
         }
     }
 
+    private fun fetchCachLyData() {
+        val sharedPreferences = requireActivity().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("TOKEN", null)
+        val cccd = sharedPreferences.getString("CCCD", null)
+
+        if (token == null || cccd == null) return
+
+        val bearerToken = "Bearer $token"
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                // Gọi API thông qua Retrofit
+                val response = RetrofitClient.instance.getThongTinCachLy(bearerToken, cccd)
+
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val cachLyResponse = response.body()!!
+
+                        // Kiểm tra flag isQuarantined từ backend và mảng data có dữ liệu không
+                        if (cachLyResponse.success && cachLyResponse.isQuarantined && cachLyResponse.data.isNotEmpty()) {
+                            val activeCachLy = cachLyResponse.data[0]
+                            val ngayBatDau = activeCachLy.NgayBatDau
+                            val ngayKetThuc = activeCachLy.NgayKetThuc
+
+                            if (ngayBatDau != null && ngayKetThuc != null) {
+                                updateTrangThaiCachLy(ngayBatDau, ngayKetThuc)
+                            }
+                        } else {
+                            // Xử lý UI khi người dùng KHÔNG bị cách ly hoặc mảng data rỗng
+                            tvNgayBatDauCachLy.text = "--/--/----"
+                            tvNgayKetThucCachLy.text = "--/--/----"
+                            tvSoNgayConLai.text = "Không có yêu cầu cách ly"
+                            tvSoNgayConLai.setTextColor(Color.parseColor("#4CAF50"))
+
+                            // Đẩy thanh progress về 0
+                            val paramsProgress = viewProgressCachLy.layoutParams as LinearLayout.LayoutParams
+                            paramsProgress.weight = 0f
+                            viewProgressCachLy.layoutParams = paramsProgress
+
+                            val paramsRemain = viewProgressCachLyRemain.layoutParams as LinearLayout.LayoutParams
+                            paramsRemain.weight = 100f
+                            viewProgressCachLyRemain.layoutParams = paramsRemain
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "Không lấy được dữ liệu cách ly!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Lỗi kết nối: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
     private fun updateUI(soMuiTiem: Int, loaiThe: String, danhSach: List<com.example.truyvetyte.model.ChiTietTiem>?) {
-        // 1. Cập nhật Thẻ chứng nhận (Màu sắc, chữ)
         tvSoMuiTiem.text = soMuiTiem.toString()
         when (loaiThe.uppercase()) {
             "XANH" -> {
@@ -122,13 +259,11 @@ class DichTe : Fragment() {
             }
         }
 
-        // 2. Reset trạng thái UI danh sách mũi tiêm
         layoutMui1.visibility = View.GONE
         layoutMui2.visibility = View.GONE
         dividerTiemChung.visibility = View.GONE
         tvChuaTiemChung.visibility = View.GONE
 
-        // 3. Cập nhật danh sách mũi tiêm
         if (soMuiTiem == 0 || danhSach.isNullOrEmpty()) {
             tvChuaTiemChung.visibility = View.VISIBLE
         } else {
