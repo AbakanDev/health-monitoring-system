@@ -218,19 +218,23 @@
                         android:textSize="15sp"
                         android:layout_marginBottom="4dp"/>
 
-                <!-- Thanh Progress Bar Giả -->
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
                         android:orientation="horizontal"
+                        android:weightSum="100"
                         android:background="#F0F0F0">
                     <View
                             android:id="@+id/viewProgressCachLy"
                             android:layout_width="0dp"
-                            android:layout_weight="0.75"
+                            android:layout_weight="75"
                             android:layout_height="match_parent"
                             android:background="#E4C15A"/>
-                    <View android:layout_width="0dp" android:layout_weight="0.25" android:layout_height="match_parent"/>
+                    <View
+                            android:id="@+id/viewProgressCachLyRemain"
+                            android:layout_width="0dp"
+                            android:layout_weight="25"
+                            android:layout_height="match_parent"/>
                 </LinearLayout>
 
                 <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp">

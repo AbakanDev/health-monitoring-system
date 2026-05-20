@@ -2,6 +2,8 @@ package com.example.truyvetyte.network
 
 import com.example.truyvetyte.LoginRequest
 import com.example.truyvetyte.LoginResponse
+import com.example.truyvetyte.model.CachLy
+import com.example.truyvetyte.model.CachLyResponse
 import com.example.truyvetyte.model.HealthResponse
 import com.example.truyvetyte.model.RegisterModels
 import com.example.truyvetyte.model.RegisterRequest
@@ -28,4 +30,9 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("cccd") cccd: String
     ): Response<TiemChungResponse>
+    @GET("api/health/quarantine-status/{cccd}")
+    suspend fun getThongTinCachLy(
+        @Header("Authorization") token: String,
+        @Path("cccd") cccd: String
+    ): Response<CachLyResponse>
 }
