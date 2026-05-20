@@ -58,7 +58,75 @@ const getQuarantineStatus = async (req, res) => {
     }
 };
 
+const getTestHistory = async (req, res) => {
+    try {
+        const cccd = req.params.cccd;
+
+        if (!cccd) {
+            return res.status(400).json({ success: false, message: 'Vui lòng cung cấp CCCD' });
+        }
+
+        const data = await healthService.getTestHistoryByCCCD(cccd);
+
+        if (data.length === 0) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Không tìm thấy lịch sử xét nghiệm cho công dân này' 
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Lấy lịch sử xét nghiệm thành công',
+            totalTests: data.length,
+            data: data
+        });
+
+    } catch (error) {
+        console.error('Lỗi khi lấy lịch sử xét nghiệm:', error);
+        return res.status(500).json({ success: false, message: 'Lỗi server khi lấy lịch sử xét nghiệm' });
+    }
+};
+
+const getTestStatus = async (req, res) => {
+    try {
+        const cccd = req.params.cccd;
+
+        if (!cccd) {
+            return res.status(400).json({ success: false, message: 'Vui lòng cung cấp CCCD' });
+        }
+
+        // Lấy lịch sử (đã sắp xếp mới nhất lên đầu)
+        const data = await healthService.getTestHistoryByCCCD(cccd);
+
+        if (data.length === 0) {
+            return res.status(200).json({
+                success: true,
+                message: 'Công dân chưa có dữ liệu xét nghiệm',
+                hasTested: false,
+                latestTest: null
+            });
+        }
+
+        // Tình trạng mới nhất là phần tử đầu tiên của mảng
+        const latestTest = data[0];
+
+        return res.status(200).json({
+            success: true,
+            message: 'Lấy tình trạng xét nghiệm mới nhất thành công',
+            hasTested: true,
+            latestTest: latestTest
+        });
+
+    } catch (error) {
+        console.error('Lỗi khi lấy tình trạng xét nghiệm:', error);
+        return res.status(500).json({ success: false, message: 'Lỗi server khi lấy tình trạng xét nghiệm' });
+    }
+};
+
 module.exports = {
     getVaccineInfo,
-    getQuarantineStatus
+    getQuarantineStatus,
+    getTestHistory, 
+    getTestStatus
 };

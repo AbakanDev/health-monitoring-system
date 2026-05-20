@@ -37,7 +37,34 @@ const getActiveQuarantines = async (cccd) => {
     return rows;
 };
 
+const getTestHistoryByCCCD = async (cccd) => {
+    try {
+        const query = `
+            SELECT 
+                n.HoTen,
+                n.CCCD,
+                x.MaXetNghiem,
+                ROW_NUMBER() OVER(PARTITION BY x.MaNguoiDung ORDER BY x.NgayXetNghiem ASC) AS LanXetNghiem,
+                x.LoaiXetNghiem,
+                DATE_FORMAT(x.NgayXetNghiem, '%d/%m/%Y') AS NgayXetNghiem,
+                x.KetQua, 
+                c.TenCoSo AS DiaDiemXetNghiem
+            FROM XETNGHIEM x
+            JOIN NGUOIDUNG n ON x.MaNguoiDung = n.MaNguoiDung
+            LEFT JOIN COSOYTE c ON x.MaCoSo = c.MaCoSo
+            WHERE n.CCCD = ?
+            ORDER BY x.NgayXetNghiem DESC;
+        `;
+        
+        const [rows] = await db.execute(query, [cccd]);
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     getVaccineDosesByCCCD,
-    getActiveQuarantines
+    getActiveQuarantines,
+    getTestHistoryByCCCD
 };
