@@ -60,18 +60,19 @@ class LoginActivity : AppCompatActivity() {
                             // Lấy thông tin từ backend trả về (Khớp với cục JSON)
                             val token = body?.token
                             val hoTen = body?.data?.HoTen ?: "Unknown"
-                            val maNguoiDung = body?.data?.MaNguoiDung ?: -1  // Kiểu Int
-                            val maVaiTro = body?.data?.MaVaiTro ?: ""        // Kiểu String (VD: "VT01")
+                            val maNguoiDung = body?.data?.MaNguoiDung ?: -1
+                            val maVaiTro = body?.data?.MaVaiTro ?: ""
+                            val cccd = body?.data?.CCCD ?: "" // Bổ sung lấy CCCD
 
-                            // Lưu thông tin phiên đăng nhập vào SharedPreferences
+// Lưu thông tin phiên đăng nhập vào SharedPreferences
                             val sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
                             val editor = sharedPreferences.edit()
 
-                            // Đặt Key lưu trữ đồng bộ 100% với tên Database
                             editor.putString("TOKEN", token)
                             editor.putInt("MaNguoiDung", maNguoiDung)
                             editor.putString("HoTen", hoTen)
                             editor.putString("MaVaiTro", maVaiTro)
+                            editor.putString("CCCD", cccd) // Bổ sung lưu CCCD
                             editor.apply()
 
                             // Chuyển trang và truyền tên qua MainActivity

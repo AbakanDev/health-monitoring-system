@@ -1,9 +1,11 @@
 package com.example.truyvetyte
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView 
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.truyvetyte.network.RetrofitClient
 import kotlinx.coroutines.Dispatchers
@@ -15,8 +17,74 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Kiểm tra xem có yêu cầu mở Fragment cụ thể không
+        val target = intent.getStringExtra("open_fragment")
+        if (target == "KHAI_BAO") {
+            replaceFragment(KhaiBao()) // Hàm replaceFragment bạn đã viết trước đó
+
+            // (Tùy chọn) Cập nhật lại màu sắc icon trên thanh Bottom Nav cho đúng
+            // bottomNavigation.selectedItemId = R.id.nav_khai_bao
+        } else {
+            // Mặc định mở trang chủ nếu không có yêu cầu gì
+            replaceFragment(XuHuong())
+        }
+
         testBackendConnection()
+
+        val btnXuHuong = findViewById<ImageButton>(R.id.btn_dashboard)
+        val btnLichSu = findViewById<ImageButton>(R.id.btn_history)
+        val btnDichTe = findViewById<ImageButton>(R.id.btn_epidemiology)
+        val btnKhaiBao = findViewById<ImageButton>(R.id.btn_health_form)
+        val btnKhaiBao2 = findViewById<ImageButton>(R.id.btn_xnc)
+        // Trong onCreate, bạn gọi hàm này khi bấm vào các nút ở Bottom Nav
+        btnXuHuong.setOnClickListener {
+            replaceFragment(XuHuong())
+        }
+        btnLichSu.setOnClickListener {
+            replaceFragment(LichSuTruyVet())
+        }
+        btnDichTe.setOnClickListener {
+            replaceFragment(DichTe())
+        }
+        btnKhaiBao.setOnClickListener {
+            replaceFragment(KhaiBao())
+        }
+        btnKhaiBao2.setOnClickListener {
+            replaceFragment(KhaiBao2())
+        }
+        // Xử lý khi app vừa mở lên
+        handleIntent(intent)
     }
+
+    // Cực kỳ quan trọng: Hàm này chạy khi quay về từ Trang 2 bằng FLAG_ACTIVITY_SINGLE_TOP
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent) // Cập nhật dữ liệu mới nhất
+        handleIntent(intent)
+    }
+    private fun handleIntent(intent: Intent?) {
+        val action = intent?.getStringExtra("ACTION")
+
+        if (action == "GO_TO_XU_HUONG") {
+            replaceFragment(XuHuong())
+
+            // Thay vì dùng bottomNav.selectedItemId, hãy tự đổi màu nút nếu muốn:
+            // val btnXuHuong = findViewById<ImageButton>(R.id.btn_dashboard)
+            // btnXuHuong.setImageResource(R.drawable.ic_dashboard_active)
+        }
+    }
+    // Hàm dùng chung để thay đổi Fragment
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        // R.id.main_content_frame là ID của FrameLayout ở Bước 2
+        fragmentTransaction.replace(R.id.main_content_frame, fragment)
+
+        fragmentTransaction.commit()
+    }
+
+
 
     private fun testBackendConnection() {
         // Đẩy việc gọi mạng ra luồng IO ngầm

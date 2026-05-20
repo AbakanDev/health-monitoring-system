@@ -286,7 +286,7 @@
 
 
         <Button
-                android:id="@+id/btnHoanTat"
+                android:id="@+id/btnHoanTat1"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginTop="24dp"

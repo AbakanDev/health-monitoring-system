@@ -40,7 +40,7 @@
         <Space android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
         <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
             <ImageButton android:id="@+id/btn_health_form" android:layout_width="30dp" android:layout_height="30dp" android:src="@drawable/img_form" android:background="@android:color/transparent" />
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Khai Báo" android:textColor="@android:color/white" android:textSize="9sp" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sức khoẻ" android:textColor="@android:color/white" android:textSize="9sp" />
         </LinearLayout>
 
 

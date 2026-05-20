@@ -3,13 +3,14 @@ package com.example.truyvetyte
 import com.google.gson.annotations.SerializedName
 
 data class LoginResponse(
-    val message: String,
-    val token: String?,
-    val data: UserData?
+    @SerializedName("message") val message: String,
+    @SerializedName("token") val token: String?,
+    @SerializedName("data") val data: UserData?
 )
 
 data class UserData(
-    val MaNguoiDung: Int,
-    val HoTen: String,
-    val MaVaiTro: String
+    @SerializedName("MaNguoiDung") val MaNguoiDung: Int,
+    @SerializedName("HoTen") val HoTen: String,
+    @SerializedName("MaVaiTro") val MaVaiTro: String,
+    @SerializedName("CCCD") val CCCD: String
 )

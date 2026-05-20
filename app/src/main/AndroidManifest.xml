@@ -37,6 +37,12 @@
                 android:name=".RegisterSuccessActivity"
                 android:exported="false"
                 android:screenOrientation="portrait" />
+        <activity
+                android:name=".KhaiBao2"
+                android:exported="false" />
+        <activity
+                android:name=".ChucMungKhaiBao"
+                android:exported="false" />
     </application>
 
 </manifest>

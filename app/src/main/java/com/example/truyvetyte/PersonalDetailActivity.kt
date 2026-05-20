@@ -1,6 +1,7 @@
 package com.example.truyvetyte
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.RadioButton
@@ -15,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
-import android.content.Intent
+
 class PersonalDetailActivity : AppCompatActivity() {
 
     // 2 biến này sẽ hứng dữ liệu từ màn hình trước truyền sang
@@ -24,9 +25,10 @@ class PersonalDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Nhớ đảm bảo tên layout đúng với file XML số 2 của bạn
         setContentView(R.layout.personal_detail_screen)
 
-        // Nhận dữ liệu từ Intent
+        // Nhận dữ liệu từ RegisterActivity gửi sang
         passedCccd = intent.getStringExtra("EXTRA_CCCD") ?: ""
         passedPassword = intent.getStringExtra("EXTRA_PASSWORD") ?: ""
 
@@ -39,6 +41,7 @@ class PersonalDetailActivity : AppCompatActivity() {
         val btnSubmit = findViewById<ImageView>(R.id.btnSubmit)
         val btnBack = findViewById<ImageView>(R.id.btnBack)
 
+        // Setup DatePicker cho ô ngày sinh
         edtDob.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
@@ -55,13 +58,12 @@ class PersonalDetailActivity : AppCompatActivity() {
                 },
                 year, month, day
             )
-            // Không cho phép chọn ngày trong tương lai
             datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
             datePickerDialog.show()
         }
 
         btnBack.setOnClickListener {
-            finish() // Quay lại màn hình trước
+            finish()
         }
 
         btnSubmit.setOnClickListener {
@@ -80,7 +82,7 @@ class PersonalDetailActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Gộp tất cả data (cả cũ và mới) vào Model để gửi lên API
+            // Gộp tất cả data vào Model để gửi lên API
             val requestData = RegisterRequest(
                 cccd = passedCccd,
                 password = passedPassword,
@@ -92,7 +94,6 @@ class PersonalDetailActivity : AppCompatActivity() {
                 phone = phone
             )
 
-            // Gọi API bằng Coroutine
             submitDataToBackend(requestData)
         }
     }
@@ -103,19 +104,22 @@ class PersonalDetailActivity : AppCompatActivity() {
                 val response = RetrofitClient.instance.registerUser(requestData)
 
                 withContext(Dispatchers.Main) {
-                    if (response.isSuccessful && response.body()?.status == "success") {
+                    // Xóa điều kiện "==" gây lỗi, chỉ cần check HTTP Code 200-299 là đủ
+                    if (response.isSuccessful) {
                         // Chuyển sang màn hình thành công
                         val intent = Intent(this@PersonalDetailActivity, RegisterSuccessActivity::class.java)
+                        // Xóa các trang trước đó khỏi stack để người dùng không back lại form đăng ký được
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                         finish()
                     } else {
-                        // Xử lý lỗi trả về từ Server (ví dụ: Trùng CCCD, lỗi SQL...)
-                        var errorMessage = "Lỗi hệ thống"
+                        // Xử lý lỗi trả về từ Server
+                        var errorMessage = "Lỗi hệ thống hoặc trùng dữ liệu"
                         try {
                             val errorString = response.errorBody()?.string()
                             if (errorString != null) {
                                 val jsonObject = org.json.JSONObject(errorString)
-                                errorMessage = jsonObject.getString("message")
+                                errorMessage = jsonObject.optString("message", errorMessage)
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -125,7 +129,7 @@ class PersonalDetailActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@PersonalDetailActivity, "Lỗi kết nối: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@PersonalDetailActivity, "Lỗi kết nối: Không thể gọi Server", Toast.LENGTH_LONG).show()
                 }
             }
         }
