@@ -1,4 +1,4 @@
-const db = require('../config/db'); // Import kết nối database của bạn
+const db = require('../config/db'); // Import kết nối database 
 
 const getVaccineDosesByCCCD = async (cccd) => {
     try {
@@ -18,6 +18,26 @@ const getVaccineDosesByCCCD = async (cccd) => {
     }
 };
 
+const getActiveQuarantines = async (cccd) => {
+    const query = `
+        SELECT 
+            cl.MaCachLy,
+            DATE_FORMAT(cl.NgayBatDau, '%d/%m/%Y') AS NgayBatDau,
+            DATE_FORMAT(cl.NgayKetThuc, '%d/%m/%Y') AS NgayKetThuc,
+            cl.DiaDiem AS DiaDiemChiTiet,
+            csyt.TenCoSo AS TenCoSoYTe
+        FROM CACHLY cl
+        JOIN NGUOIDUNG nd ON cl.MaNguoiDung = nd.MaNguoiDung
+        LEFT JOIN COSOYTE csyt ON cl.MaCoSo = csyt.MaCoSo
+        WHERE nd.CCCD = ? AND CURDATE() BETWEEN cl.NgayBatDau AND cl.NgayKetThuc;
+    `;
+    
+    // Thực thi câu truy vấn với tham số cccd
+    const [rows] = await db.execute(query, [cccd]);
+    return rows;
+};
+
 module.exports = {
-    getVaccineDosesByCCCD
+    getVaccineDosesByCCCD,
+    getActiveQuarantines
 };
