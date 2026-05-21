@@ -36,6 +36,8 @@ class MainActivity : AppCompatActivity() {
         val btnDichTe = findViewById<ImageButton>(R.id.btn_epidemiology)
         val btnKhaiBao = findViewById<ImageButton>(R.id.btn_health_form)
         val btnKhaiBao2 = findViewById<ImageButton>(R.id.btn_xnc)
+        val btnQuetQR = findViewById<ImageButton>(R.id.btn_qr_scan)
+        val btnHelp = findViewById<ImageButton>(R.id.btn_help)
         // Trong onCreate, bạn gọi hàm này khi bấm vào các nút ở Bottom Nav
         btnXuHuong.setOnClickListener {
             replaceFragment(XuHuong())
@@ -51,6 +53,13 @@ class MainActivity : AppCompatActivity() {
         }
         btnKhaiBao2.setOnClickListener {
             replaceFragment(KhaiBao2())
+        }
+        // Trong MainActivity.kt, tại chỗ bắt sự kiện nút QR
+        btnQuetQR.setOnClickListener {
+            replaceFragment(ScannerFragment())
+        }
+        btnHelp.setOnClickListener {
+            replaceFragment(HelpActivity())
         }
         // Xử lý khi app vừa mở lên
         handleIntent(intent)

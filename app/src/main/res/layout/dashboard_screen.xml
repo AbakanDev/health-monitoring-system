@@ -12,6 +12,7 @@
             android:orientation="vertical"
             android:paddingHorizontal="20dp"
             android:paddingVertical="24dp">
+
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -20,6 +21,8 @@
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="16dp" />
+
+        <!-- THẺ BIỂU ĐỒ CỘT -->
         <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,56 +36,24 @@
                     android:orientation="vertical"
                     android:padding="16dp">
                 <TextView
+                        android:id="@+id/tv_chart_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tổng số ca nhiễm (7 ngày)"
+                        android:text="Tổng số ca nhiễm (Năm nay)"
                         android:textColor="#5C94F0"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="16dp" />
-                <LinearLayout
+
+                <!-- Sử dụng thư viện MPAndroidChart để vẽ 12 cột cho 12 tháng -->
+                <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/barChart"
                         android:layout_width="match_parent"
-                        android:layout_height="180dp"
-                        android:orientation="horizontal"
-                        android:gravity="bottom">
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3000" android:textSize="10sp" android:textColor="#5C94F0" android:textStyle="bold"/>
-                        <View android:layout_width="match_parent" android:layout_height="60dp" android:background="#8C54FF" android:layout_marginTop="4dp" android:layout_marginHorizontal="1dp"/>
-                        <TextView android:layout_width="wrap_content"  android:layout_height="wrap_content" android:text="3/5" android:textSize="10sp" android:textColor="#5C94F0" android:layout_marginTop="8dp" android:textStyle="bold"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3200" android:textSize="10sp" android:textColor="#5C94F0" android:textStyle="bold"/>
-                        <View android:layout_width="match_parent" android:layout_height="75dp" android:background="#8C54FF" android:layout_marginTop="4dp" android:layout_marginHorizontal="1dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="4/5" android:textSize="10sp" android:textColor="#5C94F0" android:layout_marginTop="8dp" android:textStyle="bold"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3300" android:textSize="10sp" android:textColor="#5C94F0" android:textStyle="bold"/>
-                        <View android:layout_width="match_parent" android:layout_height="90dp" android:background="#8C54FF" android:layout_marginTop="4dp" android:layout_marginHorizontal="1dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="5/5" android:textSize="10sp" android:textColor="#5C94F0" android:layout_marginTop="8dp" android:textStyle="bold"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3400" android:textSize="10sp" android:textColor="#5C94F0" android:textStyle="bold"/>
-                        <View android:layout_width="match_parent" android:layout_height="105dp" android:background="#8C54FF" android:layout_marginTop="4dp" android:layout_marginHorizontal="1dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="6/5" android:textSize="10sp" android:textColor="#5C94F0" android:layout_marginTop="8dp" android:textStyle="bold"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3500" android:textSize="10sp" android:textColor="#5C94F0" android:textStyle="bold"/>
-                        <View android:layout_width="match_parent" android:layout_height="120dp" android:background="#8C54FF" android:layout_marginTop="4dp" android:layout_marginHorizontal="1dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="7/5" android:textSize="10sp" android:textColor="#5C94F0" android:layout_marginTop="8dp" android:textStyle="bold"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3600" android:textSize="10sp" android:textColor="#5C94F0" android:textStyle="bold"/>
-                        <View android:layout_width="match_parent" android:layout_height="135dp" android:background="#8C54FF" android:layout_marginTop="4dp" android:layout_marginHorizontal="1dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="8/5" android:textSize="10sp" android:textColor="#5C94F0" android:layout_marginTop="8dp" android:textStyle="bold"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1.2" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3600" android:textSize="10sp" android:textColor="#5C94F0" android:textStyle="bold"/>
-                        <View android:layout_width="match_parent" android:layout_height="135dp" android:background="#D05CE3" android:layout_marginTop="4dp" android:layout_marginHorizontal="1dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hôm nay" android:textSize="10sp" android:textColor="#5C94F0" android:layout_marginTop="8dp" android:textStyle="bold"/>
-                    </LinearLayout>
-                </LinearLayout>
+                        android:layout_height="220dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <!-- THẺ TỶ LỆ TIÊM CHỦNG -->
         <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,128 +77,77 @@
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-                    <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="16dp">
-                            <androidx.cardview.widget.CardView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
-                                    app:cardCornerRadius="6dp"
-                                    app:cardElevation="0dp"
-                                    app:cardBackgroundColor="#D05CE3"
-                                    android:layout_marginEnd="12dp"/>
-                            <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Mũi 1" android:textColor="#D05CE3" android:textSize="15sp" android:textStyle="bold"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="98%" android:textColor="#D05CE3" android:textSize="15sp" android:textStyle="bold"/>
-                        </LinearLayout>
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="16dp">
-                            <androidx.cardview.widget.CardView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
-                                    app:cardCornerRadius="6dp"
-                                    app:cardElevation="0dp"
-                                    app:cardBackgroundColor="#8C54FF"
-                                    android:layout_marginEnd="12dp"/>
-                            <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Mũi 2" android:textColor="#8C54FF" android:textSize="15sp" android:textStyle="bold"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="92%" android:textColor="#8C54FF" android:textSize="15sp" android:textStyle="bold"/>
-                        </LinearLayout>
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
-                            <androidx.cardview.widget.CardView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
-                                    app:cardCornerRadius="6dp"
-                                    app:cardElevation="0dp"
-                                    app:cardBackgroundColor="#5C94F0"
-                                    android:layout_marginEnd="12dp"/>
-                            <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Mũi 3" android:textColor="#5C94F0" android:textSize="15sp" android:textStyle="bold"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="45%" android:textColor="#5C94F0" android:textSize="15sp" android:textStyle="bold"/>
-                        </LinearLayout>
+                        android:orientation="vertical">
+                    <!-- Mũi 1 -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="16dp">
+                        <androidx.cardview.widget.CardView android:layout_width="12dp" android:layout_height="12dp" app:cardCornerRadius="6dp" app:cardElevation="0dp" app:cardBackgroundColor="#D05CE3" android:layout_marginEnd="12dp"/>
+                        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Mũi 1" android:textColor="#D05CE3" android:textSize="15sp" android:textStyle="bold"/>
+                        <TextView android:id="@+id/tv_vaccine_dose_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="98%" android:textColor="#D05CE3" android:textSize="15sp" android:textStyle="bold"/>
+                    </LinearLayout>
+                    <!-- Mũi 2 -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                        <androidx.cardview.widget.CardView android:layout_width="12dp" android:layout_height="12dp" app:cardCornerRadius="6dp" app:cardElevation="0dp" app:cardBackgroundColor="#8C54FF" android:layout_marginEnd="12dp"/>
+                        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Mũi 2" android:textColor="#8C54FF" android:textSize="15sp" android:textStyle="bold"/>
+                        <TextView android:id="@+id/tv_vaccine_dose_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="92%" android:textColor="#8C54FF" android:textSize="15sp" android:textStyle="bold"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <!-- THỐNG KÊ CHI TIẾT -->
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginBottom="16dp">
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:baselineAligned="false">
-                <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="4dp"
-                        app:cardElevation="2dp"
-                        android:layout_marginEnd="4dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp" android:baselineAligned="false">
+                <!-- Ca nhiễm (F0) -->
+                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" app:cardCornerRadius="4dp" app:cardElevation="2dp" android:layout_marginEnd="4dp">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
                         <View android:layout_width="6dp" android:layout_height="match_parent" android:background="#B355DB"/>
                         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp">
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ca nhiễm (F0)" android:textColor="#90CAF9" android:textSize="11sp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="17.000" android:textColor="#5C94F0" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                            <TextView android:id="@+id/tv_stat_f0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="17.000" android:textColor="#5C94F0" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="4dp"
-                        app:cardElevation="2dp"
-                        android:layout_marginStart="4dp">
+                <!-- F1/F2 -->
+                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" app:cardCornerRadius="4dp" app:cardElevation="2dp" android:layout_marginStart="4dp">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
                         <View android:layout_width="6dp" android:layout_height="match_parent" android:background="#64B5F6"/>
                         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp">
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="F1/F2 đang theo dõi" android:textColor="#90CAF9" android:textSize="11sp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="17.000" android:textColor="#5C94F0" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                            <TextView android:id="@+id/tv_stat_f1_f2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="17.000" android:textColor="#5C94F0" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
-                <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="4dp"
-                        app:cardElevation="2dp"
-                        android:layout_marginEnd="4dp">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:baselineAligned="false">
+                <!-- Cách ly -->
+                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" app:cardCornerRadius="4dp" app:cardElevation="2dp" android:layout_marginEnd="4dp">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
                         <View android:layout_width="6dp" android:layout_height="match_parent" android:background="#7E57C2"/>
                         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp">
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Số người đang cách ly" android:textColor="#90CAF9" android:textSize="11sp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="17.000" android:textColor="#5C94F0" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                            <TextView android:id="@+id/tv_stat_quarantine" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="17.000" android:textColor="#5C94F0" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="4dp"
-                        app:cardElevation="2dp"
-                        android:layout_marginStart="4dp">
+                <!-- Vùng Đỏ -->
+                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" app:cardCornerRadius="4dp" app:cardElevation="2dp" android:layout_marginStart="4dp">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
                         <View android:layout_width="6dp" android:layout_height="match_parent" android:background="#4DD0E1"/>
                         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp">
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Vùng Đỏ" android:textColor="#90CAF9" android:textSize="11sp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="17.000" android:textColor="#5C94F0" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                            <TextView android:id="@+id/tv_stat_red_zone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="17.000" android:textColor="#5C94F0" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
         </LinearLayout>
+
+        <!-- TRẠNG THÁI SỨC KHỎE -->
         <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -261,6 +181,7 @@
                         app:layout_constraintTop_toBottomOf="@id/tv_status_title"
                         app:layout_constraintStart_toStartOf="parent"/>
                 <TextView
+                        android:id="@+id/tv_status_desc"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Trạng thái dịch tễ của bạn hiện tại không có nguy cơ lây nhiễm cao. Tiếp tục tuân thủ quy tắc 5K."
@@ -272,6 +193,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
                 <ImageView
+                        android:id="@+id/iv_status_icon"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:alpha="0.2"

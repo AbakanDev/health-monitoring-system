@@ -8,6 +8,7 @@ import com.example.truyvetyte.model.HealthResponse
 import com.example.truyvetyte.model.RegisterModels
 import com.example.truyvetyte.model.RegisterRequest
 import com.example.truyvetyte.model.TiemChungResponse // Import model mới
+import com.example.truyvetyte.model.TrendResponse
 import com.example.truyvetyte.model.XetNghiemResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -42,4 +43,7 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("cccd") cccd: String
     ): Response<XetNghiemResponse>
+
+    @GET("api/health/trend-f0")
+    suspend fun getTrendAnalysis(): Response<TrendResponse>
 }
