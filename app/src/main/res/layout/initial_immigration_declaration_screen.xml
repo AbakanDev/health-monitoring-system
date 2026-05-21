@@ -6,16 +6,13 @@
             android:background="#F0FAFE"
             android:fillViewport="true">
 
-
-    <!-- KHỐI NỘI DUNG CHÍNH (Đã xóa Header cứng để dùng Header chung) -->
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="20dp"
             android:paddingTop="20dp"
-            android:paddingBottom="80dp"> <!-- Padding bottom 80dp để né thanh Bottom Navigation -->
-
+            android:paddingBottom="80dp">
 
         <TextView
                 android:layout_width="wrap_content"
@@ -24,7 +21,6 @@
                 android:textColor="@color/bluewithcheckbox"
                 android:textSize="22sp"
                 android:textStyle="bold" />
-
 
         <TextView
                 android:layout_width="wrap_content"
@@ -35,23 +31,164 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-
-        <!-- CARD 1: LOẠI CỬA KHẨU -->
         <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="16dp">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#55CBF9"
+                        android:padding="16dp">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lịch sử xuất nhập cảnh"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    <TextView
+                            android:id="@+id/tvXemTatCaXNC"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Xem tất cả"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+                <TextView
+                        android:id="@+id/tvChuaXNC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Bạn chưa có lịch sử xuất nhập cảnh"
+                        android:textColor="#EF5350"
+                        android:textSize="16sp"
+                        android:textStyle="italic"
+                        android:gravity="center"
+                        android:padding="16dp"
+                        android:visibility="gone" />
+
+                <RelativeLayout
+                        android:id="@+id/layoutLan2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                    <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Lần 2"
+                                android:textColor="#79A9F5"
+                                android:textStyle="bold"
+                                android:textSize="22sp"/>
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Khai báo nhập cảnh"
+                                android:textColor="#A3C7F6"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+
+                    <TextView
+                            android:id="@+id/tvNgayXNCLan2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1/2/2026 - 12h00"
+                            android:textColor="#92BEFA"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+                <View
+                        android:id="@+id/dividerXNC"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0"
+                        android:layout_marginHorizontal="16dp"/>
+
+                <RelativeLayout
+                        android:id="@+id/layoutLan1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                    <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Lần 1"
+                                android:textColor="#79A9F5"
+                                android:textStyle="bold"
+                                android:textSize="22sp"/>
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Khai báo xuất cảnh"
+                                android:textColor="#A3C7F6"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+
+                    <TextView
+                            android:id="@+id/tvNgayXNCLan1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1/1/2026 - 12h00"
+                            android:textColor="#92BEFA"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
                 app:cardUseCompatPadding="true">
-
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
 
                 <LinearLayout
                         android:layout_width="wrap_content"
@@ -73,7 +210,6 @@
                             android:textStyle="bold" />
                 </LinearLayout>
 
-
                 <RadioGroup
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -85,8 +221,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-
-        <!-- CARD 2: LOẠI XUẤT NHẬP CẢNH -->
         <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,13 +228,11 @@
                 app:cardElevation="4dp"
                 app:cardUseCompatPadding="true">
 
-
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
 
                 <LinearLayout
                         android:layout_width="wrap_content"
@@ -122,7 +254,6 @@
                             android:textStyle="bold" />
                 </LinearLayout>
 
-
                 <RadioGroup
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -133,8 +264,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-
-        <!-- CARD 3: QUỐC GIA ĐI / ĐẾN -->
         <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -142,13 +271,11 @@
                 app:cardElevation="4dp"
                 app:cardUseCompatPadding="true">
 
-
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
 
                 <LinearLayout
                         android:layout_width="wrap_content"
@@ -170,7 +297,6 @@
                             android:textStyle="bold" />
                 </LinearLayout>
 
-
                 <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -181,7 +307,6 @@
                         android:paddingBottom="12dp"
                         android:backgroundTint="#D3D3D3"
                         android:layout_marginBottom="16dp"/>
-
 
                 <LinearLayout
                         android:layout_width="wrap_content"
@@ -203,7 +328,6 @@
                             android:textStyle="bold" />
                 </LinearLayout>
 
-
                 <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -216,8 +340,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-
-        <!-- CARD 4: THÔNG TIN CỬA KHẨU -->
         <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -225,13 +347,11 @@
                 app:cardElevation="4dp"
                 app:cardUseCompatPadding="true">
 
-
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
 
                 <TextView
                         android:layout_width="wrap_content"
@@ -240,7 +360,6 @@
                         android:textColor="@color/bluewithcheckbox"
                         android:textSize="16sp"
                         android:textStyle="bold" />
-
 
                 <LinearLayout
                         android:layout_width="wrap_content"
@@ -263,7 +382,6 @@
                             android:textStyle="bold" />
                 </LinearLayout>
 
-
                 <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -275,7 +393,6 @@
                         android:backgroundTint="#D3D3D3"
                         android:layout_marginBottom="16dp"/>
 
-
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -283,7 +400,6 @@
                         android:textColor="@color/bluelightgreen"
                         android:textSize="14sp"
                         android:textStyle="bold" />
-
 
                 <RadioGroup
                         android:layout_width="match_parent"
@@ -295,8 +411,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-
-        <!-- PHẦN CAM KẾT -->
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -305,12 +419,10 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="4dp">
 
-
             <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/bluelightgreen" />
-
 
             <TextView
                     android:layout_width="wrap_content"
@@ -320,7 +432,6 @@
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
-
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -330,7 +441,6 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
         </LinearLayout>
-
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -340,12 +450,10 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="4dp">
 
-
             <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/bluelightgreen" />
-
 
             <TextView
                     android:layout_width="wrap_content"
@@ -354,7 +462,6 @@
                     android:textColor="@color/bluelightgreen"
                     android:textSize="14sp"
                     android:textStyle="bold" />
-
 
             <TextView
                     android:layout_width="wrap_content"
@@ -366,8 +473,6 @@
                     android:textStyle="bold" />
         </LinearLayout>
 
-
-        <!-- NÚT HOÀN TẤT -->
         <Button
                 android:id="@+id/btnHoanTat2"
                 android:layout_width="match_parent"
@@ -382,7 +487,6 @@
                 android:textColor="@android:color/white"
                 android:backgroundTint="@color/darklightbluemint"
                 app:cornerRadius="28dp" />
-
 
     </LinearLayout>
 </ScrollView>
