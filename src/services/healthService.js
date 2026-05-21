@@ -63,8 +63,38 @@ const getTestHistoryByCCCD = async (cccd) => {
     }
 };
 
+const getF0TrendThisYear = async () => {
+    // Câu query đếm số ca dương tính theo từng tháng trong năm nay
+    // Chú ý: Đổi chữ 'Dương tính' thành giá trị thực tế bạn lưu trong cột KetQua
+    const query = `
+        SELECT 
+            MONTH(NgayXetNghiem) as month, 
+            COUNT(MaXetNghiem) as total_cases 
+        FROM XETNGHIEM 
+        WHERE 
+            YEAR(NgayXetNghiem) = YEAR(CURDATE()) 
+            AND KetQua = 'Dương tính' 
+        GROUP BY MONTH(NgayXetNghiem)
+        ORDER BY month ASC;
+    `;
+
+    const [rows] = await db.execute(query);
+
+    // Khởi tạo mảng 12 tháng với giá trị mặc định là 0
+    const monthlyData = new Array(12).fill(0);
+
+    // Đổ dữ liệu từ DB vào mảng dựa theo index (tháng 1 là index 0)
+    rows.forEach(row => {
+        const monthIndex = row.month - 1; // MySQL trả về tháng 1-12, mảng JS từ 0-11
+        monthlyData[monthIndex] = row.total_cases;
+    });
+
+    return monthlyData;
+};
+
 module.exports = {
     getVaccineDosesByCCCD,
     getActiveQuarantines,
-    getTestHistoryByCCCD
+    getTestHistoryByCCCD,
+    getF0TrendThisYear
 };

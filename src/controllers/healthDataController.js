@@ -25,7 +25,6 @@ const getVaccineInfo = async (req, res) => {
     }
 };
 
-
 const getQuarantineStatus = async (req, res) => {
     try {
         const cccd = req.params.cccd;
@@ -124,9 +123,28 @@ const getTestStatus = async (req, res) => {
     }
 };
 
+const getTrendAnalysis = async (req, res) => {
+    try {
+        const trendData = await healthService.getF0TrendThisYear();
+        
+        return res.status(200).json({
+            success: true,
+            message: "Lấy dữ liệu xu hướng thành công",
+            data: trendData // Sẽ trả về mảng ví dụ: [1200, 1500, 2800, 0, 0, ...]
+        });
+    } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu trend analysis:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Lỗi server khi lấy dữ liệu xu hướng"
+        });
+    }
+};
+
 module.exports = {
     getVaccineInfo,
     getQuarantineStatus,
     getTestHistory, 
-    getTestStatus
+    getTestStatus,
+    getTrendAnalysis
 };
