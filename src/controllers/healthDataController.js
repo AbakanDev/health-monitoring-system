@@ -199,7 +199,7 @@ const getFirstTest = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: 'Lấy kết quả xét nghiệm sớm nhất thành công',
+            message: 'Lấy kết quả xét nghiệm mới nhất thành công',
             data: data
         });
 
