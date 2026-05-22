@@ -179,6 +179,51 @@ const getDashboardStats = async () => {
     }
 };
 
+const getContactStatsByCCCD = async (cccd) => {
+    try {
+        const query = `
+            WITH TargetUser AS (
+                -- Lấy MaNguoiDung dựa trên CCCD truyền vào
+                SELECT MaNguoiDung FROM NGUOIDUNG WHERE CCCD = ? LIMIT 1
+            ),
+            NguoiTiepXuc AS (
+                SELECT 
+                    CASE 
+                        WHEN MaNguoiDung1 = (SELECT MaNguoiDung FROM TargetUser) THEN MaNguoiDung2 
+                        ELSE MaNguoiDung1 
+                    END AS MaNguoiDungKhac
+                FROM LICHSUTIEPXUC
+                WHERE MaNguoiDung1 = (SELECT MaNguoiDung FROM TargetUser) 
+                   OR MaNguoiDung2 = (SELECT MaNguoiDung FROM TargetUser)
+            ),
+            TrangThaiMoiNhat AS (
+                SELECT MaNguoiDung, MaCapDo 
+                FROM GHINHANCAPDO
+                WHERE MaGhiNhanCapDo IN (
+                    SELECT MAX(MaGhiNhanCapDo) 
+                    FROM GHINHANCAPDO 
+                    GROUP BY MaNguoiDung
+                )
+            )
+            SELECT 
+                COALESCE(SUM(CASE WHEN t.MaCapDo = 'F0' THEN 1 ELSE 0 END), 0) AS SoLuotF0,
+                COALESCE(SUM(CASE WHEN t.MaCapDo = 'F1' THEN 1 ELSE 0 END), 0) AS SoLuotF1,
+                COALESCE(SUM(CASE WHEN t.MaCapDo = 'F2' THEN 1 ELSE 0 END), 0) AS SoLuotF2,
+                COUNT(n.MaNguoiDungKhac) AS TongLuotTiepXuc
+            FROM NguoiTiepXuc n
+            LEFT JOIN TrangThaiMoiNhat t ON n.MaNguoiDungKhac = t.MaNguoiDung;
+        `;
+        
+        // Thực thi câu lệnh với tham số cccd
+        const [rows] = await db.execute(query, [cccd]);
+        
+        // Vì kết quả trả về bằng hàm SUM/COUNT chỉ có duy nhất 1 dòng, ta lấy phần tử đầu tiên
+        return rows[0]; 
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     getVaccineDosesByCCCD,
     getActiveQuarantines,
@@ -186,4 +231,5 @@ module.exports = {
     getF0TrendThisYear,
     getVaccinationRates,
     getDashboardStats,
+    getContactStatsByCCCD,
 };

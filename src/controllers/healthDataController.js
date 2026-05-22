@@ -177,6 +177,48 @@ const getDashboardSummary = async (req, res) => {
     }
 };
 
+const getContactStats = async (req, res) => {
+    try {
+        const cccd = req.params.cccd; // Lấy CCCD từ URL giống như các hàm trước
+
+        if (!cccd) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Vui lòng cung cấp số CCCD' 
+            });
+        }
+
+        const data = await healthService.getContactStatsByCCCD(cccd);
+
+        // Trường hợp không tìm thấy người dùng hoặc không có lượt tiếp xúc nào (Tổng lượt tiếp xúc bằng 0)
+        if (!data || data.TongLuotTiepXuc === 0) {
+            return res.status(200).json({
+                success: true,
+                message: 'Không tìm thấy lịch sử tiếp xúc hoặc công dân chưa từng tiếp xúc ai',
+                data: {
+                    SoLuotF0: 0,
+                    SoLuotF1: 0,
+                    SoLuotF2: 0,
+                    TongLuotTiepXuc: 0
+                }
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Lấy dữ liệu thống kê tiếp xúc thành công',
+            data: data
+        });
+
+    } catch (error) {
+        console.error('Lỗi khi lấy thống kê tiếp xúc theo CCCD:', error);
+        return res.status(500).json({ 
+            success: false, 
+            message: 'Lỗi server khi lấy dữ liệu thống kê tiếp xúc' 
+        });
+    }
+};
+
 module.exports = {
     getVaccineInfo,
     getQuarantineStatus,
@@ -185,4 +227,5 @@ module.exports = {
     getTrendAnalysis,
     getVaccineRates,
     getDashboardSummary,
+    getContactStats,
 };

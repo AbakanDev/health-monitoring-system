@@ -10,4 +10,5 @@ router.get('/test-status/:cccd', verifyToken, healthDataController.getTestStatus
 router.get('/trend-f0', healthDataController.getTrendAnalysis);
 router.get('/vaccine-rates', healthDataController.getVaccineRates);
 router.get('/dashboard-summary', healthDataController.getDashboardSummary);
+router.get('/contact-stats/:cccd', verifyToken, healthDataController.getContactStats);
 module.exports = router;
