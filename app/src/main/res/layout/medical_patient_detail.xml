@@ -320,7 +320,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="24dp"
                             android:layout_marginTop="4dp"
-                            android:background="@drawable/bg_progress_track">
+
+                    >
                         <View
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -407,7 +408,7 @@
                             android:gravity="end"
                             android:orientation="vertical">
                         <TextView android:text="1/2/2026 - 12h00" android:textColor="#000000" android:textSize="12sp" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                        <TextView android:text="Dương Tính" android:background="@drawable/bg_chip_red" android:paddingHorizontal="16dp" android:paddingVertical="4dp" android:textColor="#FFFFFF" android:textSize="10sp" android:textStyle="bold" android:layout_marginTop="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Dương Tính"  android:paddingHorizontal="16dp" android:paddingVertical="4dp" android:textColor="#FFFFFF" android:textSize="10sp" android:textStyle="bold" android:layout_marginTop="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                         <TextView android:text="Chỉnh sửa" android:textColor="#D500F9" android:textSize="10sp" android:layout_marginTop="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                     </LinearLayout>
                 </RelativeLayout>
@@ -439,7 +440,7 @@
                             android:gravity="end"
                             android:orientation="vertical">
                         <TextView android:text="1/1/2026 - 12h00" android:textColor="#000000" android:textSize="12sp" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                        <TextView android:text="Âm Tính" android:background="@drawable/bg_chip_green" android:paddingHorizontal="20dp" android:paddingVertical="4dp" android:textColor="#FFFFFF" android:textSize="10sp" android:textStyle="bold" android:layout_marginTop="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Âm Tính"  android:paddingHorizontal="20dp" android:paddingVertical="4dp" android:textColor="#FFFFFF" android:textSize="10sp" android:textStyle="bold" android:layout_marginTop="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                         <TextView android:text="Chỉnh sửa" android:textColor="#D500F9" android:textSize="10sp" android:layout_marginTop="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                     </LinearLayout>
                 </RelativeLayout>
