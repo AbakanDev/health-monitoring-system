@@ -8,5 +8,6 @@ router.get('/quarantine-status/:cccd', verifyToken, healthDataController.getQuar
 router.get('/test-history/:cccd', verifyToken, healthDataController.getTestHistory);
 router.get('/test-status/:cccd', verifyToken, healthDataController.getTestStatus);
 router.get('/trend-f0', healthDataController.getTrendAnalysis);
+router.get('/vaccine-rates', healthDataController.getVaccineRates);
 
 module.exports = router;

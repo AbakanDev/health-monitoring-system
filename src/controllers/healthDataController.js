@@ -141,10 +141,39 @@ const getTrendAnalysis = async (req, res) => {
     }
 };
 
+const getVaccineRates = async (req, res) => {
+    try {
+        const rateData = await healthService.getVaccinationRates();
+        
+        return res.status(200).json({
+            success: true,
+            message: "Lấy dữ liệu tỷ lệ tiêm chủng thành công",
+            data: rateData
+        });
+    } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu tỷ lệ tiêm chủng:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Lỗi server khi lấy tỷ lệ tiêm chủng"
+        });
+    }
+};
+
+// Đừng quên thêm vào module.exports ở cuối file:
 module.exports = {
     getVaccineInfo,
     getQuarantineStatus,
     getTestHistory, 
     getTestStatus,
-    getTrendAnalysis
+    getTrendAnalysis,
+    getVaccineRates // <--- Thêm dòng này
+};
+
+module.exports = {
+    getVaccineInfo,
+    getQuarantineStatus,
+    getTestHistory, 
+    getTestStatus,
+    getTrendAnalysis,
+    getVaccineRates
 };

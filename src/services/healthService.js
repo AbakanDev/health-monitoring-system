@@ -92,9 +92,32 @@ const getF0TrendThisYear = async () => {
     return monthlyData;
 };
 
+const getVaccinationRates = async () => {
+    const query = `
+        SELECT 
+            ROUND(
+                COUNT(DISTINCT CASE WHEN T.SoMui >= 1 THEN T.MaNguoiDung END) * 100.0 
+                / COUNT(DISTINCT N.MaNguoiDung), 2
+            ) AS TyLeMui1,
+            
+            ROUND(
+                COUNT(DISTINCT CASE WHEN T.SoMui >= 2 THEN T.MaNguoiDung END) * 100.0 
+                / COUNT(DISTINCT N.MaNguoiDung), 2
+            ) AS TyLeMui2
+        FROM NGUOIDUNG N
+        LEFT JOIN TIEMCHUNG T ON N.MaNguoiDung = T.MaNguoiDung;
+    `;
+
+    const [rows] = await db.execute(query);
+    
+    // Vì kết quả trả về chỉ có 1 dòng chứa TyLeMui1 và TyLeMui2, ta lấy phần tử đầu tiên
+    return rows[0]; 
+};
+
 module.exports = {
     getVaccineDosesByCCCD,
     getActiveQuarantines,
     getTestHistoryByCCCD,
-    getF0TrendThisYear
+    getF0TrendThisYear,
+    getVaccinationRates
 };
