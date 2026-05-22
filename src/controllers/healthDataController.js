@@ -159,6 +159,23 @@ const getVaccineRates = async (req, res) => {
     }
 };
 
+const getDashboardSummary = async (req, res) => {
+    try {
+        const stats = await healthService.getDashboardStats();
+        
+        return res.status(200).json({
+            success: true,
+            message: "Lấy số liệu tổng quan thành công",
+            data: stats
+        });
+    } catch (error) {
+        console.error("Lỗi khi lấy số liệu dashboard:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Lỗi server khi lấy dữ liệu tổng quan"
+        });
+    }
+};
 
 module.exports = {
     getVaccineInfo,
@@ -166,5 +183,6 @@ module.exports = {
     getTestHistory, 
     getTestStatus,
     getTrendAnalysis,
-    getVaccineRates
+    getVaccineRates,
+    getDashboardSummary
 };

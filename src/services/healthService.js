@@ -114,10 +114,69 @@ const getVaccinationRates = async () => {
     return rows[0]; 
 };
 
+const getDashboardStats = async () => {
+    try {
+        const queryF0 = `
+            SELECT COUNT(*) AS SoCaF0
+            FROM (
+                SELECT MaNguoiDung, KetQua, 
+                       ROW_NUMBER() OVER (PARTITION BY MaNguoiDung ORDER BY NgayXetNghiem DESC) as rn
+                FROM XETNGHIEM
+            ) tmp
+            WHERE rn = 1 AND KetQua = N'Dương tính';
+        `;
+
+        const queryF1F2 = `
+            SELECT COUNT(DISTINCT MaNguoiDung) AS SoCaF1F2
+            FROM GHINHANCAPDO 
+            WHERE MaCapDo IN ('F1', 'F2')
+              AND MaNguoiDung NOT IN (
+                  SELECT MaNguoiDung
+                  FROM (
+                      SELECT MaNguoiDung, KetQua, 
+                             ROW_NUMBER() OVER (PARTITION BY MaNguoiDung ORDER BY NgayXetNghiem DESC) as rn
+                      FROM XETNGHIEM
+                  ) tmp
+                  WHERE rn = 1 AND KetQua = N'Dương tính'
+              );
+        `;
+
+        const queryCachLy = `
+            SELECT COUNT(DISTINCT MaNguoiDung) AS SoNguoiCachLy
+            FROM CACHLY
+            WHERE NgayBatDau <= CURDATE() 
+              AND (NgayKetThuc IS NULL OR NgayKetThuc >= CURDATE());
+        `;
+        
+        const queryVungDo = `
+            SELECT COUNT(*) AS SoVungDo
+            FROM KHUVUC
+            WHERE Capdovung = 2;
+        `;
+
+        const [[f0Result], [f1f2Result], [cachLyResult], [vungDoResult]] = await Promise.all([
+            db.execute(queryF0),
+            db.execute(queryF1F2),
+            db.execute(queryCachLy),
+            db.execute(queryVungDo)
+        ]);
+
+        return {
+            SoCaF0: f0Result[0].SoCaF0 || 0,
+            SoCaF1F2: f1f2Result[0].SoCaF1F2 || 0,
+            SoNguoiCachLy: cachLyResult[0].SoNguoiCachLy || 0,
+            SoVungDo: vungDoResult[0].SoVungDo || 0
+        };
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     getVaccineDosesByCCCD,
     getActiveQuarantines,
     getTestHistoryByCCCD,
     getF0TrendThisYear,
-    getVaccinationRates
+    getVaccinationRates,
+    getDashboardStats
 };
