@@ -177,6 +177,41 @@ const getDashboardSummary = async (req, res) => {
     }
 };
 
+const getFirstTest = async (req, res) => {
+    try {
+        const cccd = req.params.cccd;
+
+        if (!cccd) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Vui lòng cung cấp CCCD' 
+            });
+        }
+
+        const data = await healthService.getFirstTestByCCCD(cccd);
+
+        if (!data) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Công dân này chưa có dữ liệu xét nghiệm' 
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Lấy kết quả xét nghiệm sớm nhất thành công',
+            data: data
+        });
+
+    } catch (error) {
+        console.error('Lỗi khi lấy xét nghiệm sớm nhất:', error);
+        return res.status(500).json({ 
+            success: false, 
+            message: 'Lỗi server' 
+        });
+    }
+};
+
 module.exports = {
     getVaccineInfo,
     getQuarantineStatus,
@@ -184,5 +219,6 @@ module.exports = {
     getTestStatus,
     getTrendAnalysis,
     getVaccineRates,
-    getDashboardSummary
+    getDashboardSummary,
+    getFirstTest
 };

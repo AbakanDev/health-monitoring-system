@@ -172,11 +172,36 @@ const getDashboardStats = async () => {
     }
 };
 
+const getFirstTestByCCCD = async (cccd) => {
+    try {
+        const query = `
+            SELECT 
+                nd.MaNguoiDung,
+                nd.HoTen,
+                nd.CCCD,
+                xn.LoaiXetNghiem,
+                DATE_FORMAT(xn.NgayXetNghiem, '%d/%m/%Y') AS NgayXetNghiem,
+                xn.KetQua
+            FROM NGUOIDUNG nd
+            JOIN XETNGHIEM xn ON nd.MaNguoiDung = xn.MaNguoiDung
+            WHERE nd.CCCD = ?
+            ORDER BY xn.NgayXetNghiem DESC
+            LIMIT 1;
+        `;
+        
+        const [rows] = await db.execute(query, [cccd]);
+        return rows[0]; // Trả về object đầu tiên (hoặc undefined nếu người này chưa từng xét nghiệm)
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     getVaccineDosesByCCCD,
     getActiveQuarantines,
     getTestHistoryByCCCD,
     getF0TrendThisYear,
     getVaccinationRates,
-    getDashboardStats
+    getDashboardStats,
+    getFirstTestByCCCD
 };
