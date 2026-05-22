@@ -159,15 +159,6 @@ const getVaccineRates = async (req, res) => {
     }
 };
 
-// Đừng quên thêm vào module.exports ở cuối file:
-module.exports = {
-    getVaccineInfo,
-    getQuarantineStatus,
-    getTestHistory, 
-    getTestStatus,
-    getTrendAnalysis,
-    getVaccineRates // <--- Thêm dòng này
-};
 
 module.exports = {
     getVaccineInfo,
