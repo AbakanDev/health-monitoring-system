@@ -224,6 +224,47 @@ const getContactStatsByCCCD = async (cccd) => {
     }
 };
 
+const getContactHistoryByCCCD = async (cccd) => {
+    try {
+        const query = `
+            WITH TargetUser AS (
+                SELECT MaNguoiDung FROM NGUOIDUNG WHERE CCCD = ? LIMIT 1
+            )
+            SELECT 
+                lstx.MaLichSuTiepXuc,
+                DATE_FORMAT(lstx.ThoiGian, '%d/%m/%Y %H:%i') AS ThoiGianTiepXuc,
+                lstx.DiaDiem AS DiaDiemTiepXuc,
+                nd.HoTen AS TenNguoiTiepXuc,
+                COALESCE(cd.MaCapDo, 'An Toàn') AS CapDoDichTeHienTai
+            FROM LICHSUTIEPXUC lstx
+            -- Tìm thông tin người đối diện trong cuộc gặp (loại trừ chính mình)
+            JOIN NGUOIDUNG nd ON nd.MaNguoiDung = CASE 
+                WHEN lstx.MaNguoiDung1 = (SELECT MaNguoiDung FROM TargetUser) THEN lstx.MaNguoiDung2 
+                ELSE lstx.MaNguoiDung1 
+            END
+            -- Lấy cấp độ dịch tễ MỚI NHẤT của người đối diện (nếu có)
+            LEFT JOIN (
+                SELECT g1.MaNguoiDung, g1.MaCapDo
+                FROM GHINHANCAPDO g1
+                INNER JOIN (
+                    SELECT MaNguoiDung, MAX(NgayGhiNhan) AS NgayGhiNhanMoiNhat
+                    FROM GHINHANCAPDO
+                    GROUP BY MaNguoiDung
+                ) g2 ON g1.MaNguoiDung = g2.MaNguoiDung AND g1.NgayGhiNhan = g2.NgayGhiNhanMoiNhat
+            ) cd ON nd.MaNguoiDung = cd.MaNguoiDung
+            WHERE lstx.MaNguoiDung1 = (SELECT MaNguoiDung FROM TargetUser) 
+               OR lstx.MaNguoiDung2 = (SELECT MaNguoiDung FROM TargetUser)
+            ORDER BY lstx.ThoiGian DESC;
+        `;
+        
+        // Thực thi câu lệnh với tham số cccd
+        const [rows] = await db.execute(query, [cccd]);
+        return rows; 
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     getVaccineDosesByCCCD,
     getActiveQuarantines,
@@ -232,4 +273,5 @@ module.exports = {
     getVaccinationRates,
     getDashboardStats,
     getContactStatsByCCCD,
+    getContactHistoryByCCCD,
 };
