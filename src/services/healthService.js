@@ -148,49 +148,32 @@ const getDashboardStats = async () => {
               AND (NgayKetThuc IS NULL OR NgayKetThuc >= CURDATE());
         `;
         
-        const queryVungDo = `
-            SELECT COUNT(*) AS SoVungDo
-            FROM KHUVUC
-            WHERE Capdovung = 2;
+        const queryVungNguyHiem = `
+            SELECT COUNT(*) AS SoVungNguyHiem
+            FROM (
+                SELECT k.MaKhuVuc
+                FROM KHUVUC k
+                JOIN LICHSUCHECKIN c ON k.MaKhuVuc = c.MaKhuVuc
+                JOIN GHINHANCAPDO g ON c.MaNguoiDung = g.MaNguoiDung
+                WHERE g.MaCapDo = 'F0' 
+                GROUP BY k.MaKhuVuc
+                HAVING COUNT(DISTINCT c.MaNguoiDung) > 4
+            ) AS DanhSachVungNguyHiem;
         `;
 
-        const [[f0Result], [f1f2Result], [cachLyResult], [vungDoResult]] = await Promise.all([
+        const [[f0Result], [f1f2Result], [cachLyResult], [vungNguyHiemResult]] = await Promise.all([
             db.execute(queryF0),
             db.execute(queryF1F2),
             db.execute(queryCachLy),
-            db.execute(queryVungDo)
+            db.execute(queryVungNguyHiem) 
         ]);
 
         return {
             SoCaF0: f0Result[0].SoCaF0 || 0,
             SoCaF1F2: f1f2Result[0].SoCaF1F2 || 0,
             SoNguoiCachLy: cachLyResult[0].SoNguoiCachLy || 0,
-            SoVungDo: vungDoResult[0].SoVungDo || 0
+            SoVungNguyHiem: vungNguyHiemResult[0].SoVungNguyHiem || 0 
         };
-    } catch (error) {
-        throw error;
-    }
-};
-
-const getFirstTestByCCCD = async (cccd) => {
-    try {
-        const query = `
-            SELECT 
-                nd.MaNguoiDung,
-                nd.HoTen,
-                nd.CCCD,
-                xn.LoaiXetNghiem,
-                DATE_FORMAT(xn.NgayXetNghiem, '%d/%m/%Y') AS NgayXetNghiem,
-                xn.KetQua
-            FROM NGUOIDUNG nd
-            JOIN XETNGHIEM xn ON nd.MaNguoiDung = xn.MaNguoiDung
-            WHERE nd.CCCD = ?
-            ORDER BY xn.NgayXetNghiem DESC
-            LIMIT 1;
-        `;
-        
-        const [rows] = await db.execute(query, [cccd]);
-        return rows[0]; // Trả về object đầu tiên (hoặc undefined nếu người này chưa từng xét nghiệm)
     } catch (error) {
         throw error;
     }
@@ -203,5 +186,4 @@ module.exports = {
     getF0TrendThisYear,
     getVaccinationRates,
     getDashboardStats,
-    getFirstTestByCCCD
 };
