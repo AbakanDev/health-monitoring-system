@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView // Thêm import TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -21,17 +22,20 @@ import kotlinx.coroutines.launch
 class XuHuong : Fragment() {
 
     private lateinit var barChart: BarChart
+    private lateinit var tvDose1: TextView
+    private lateinit var tvDose2: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Ánh xạ layout
         val view = inflater.inflate(R.layout.dashboard_screen, container, false)
 
-        // Tìm biểu đồ thông qua view
+        // Ánh xạ layout
         barChart = view.findViewById(R.id.barChart)
+        tvDose1 = view.findViewById(R.id.tv_vaccine_dose_1)
+        tvDose2 = view.findViewById(R.id.tv_vaccine_dose_2)
 
         return view
     }
@@ -39,12 +43,32 @@ class XuHuong : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Gọi API ngay khi view được tạo xong
         fetchTrendData()
+        fetchVaccineRates() // Gọi thêm hàm lấy tỷ lệ tiêm chủng
+    }
+
+    private fun fetchVaccineRates() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.instance.getVaccineRates()
+                if (response.isSuccessful && response.body() != null) {
+                    val rateResponse = response.body()!!
+
+                    if (rateResponse.success && rateResponse.data != null) {
+                        // Nối thêm ký tự % vào text
+                        tvDose1.text = "${rateResponse.data.tyLeMui1}%"
+                        tvDose2.text = "${rateResponse.data.tyLeMui2}%"
+                    }
+                } else {
+                    Log.e("XuHuongFragment", "Lỗi lấy dữ liệu tiêm chủng từ server")
+                }
+            } catch (e: Exception) {
+                Log.e("XuHuongFragment", "Lỗi kết nối tiêm chủng: ${e.message}")
+            }
+        }
     }
 
     private fun fetchTrendData() {
-        // Trong Fragment, sử dụng viewLifecycleOwner.lifecycleScope thay vì lifecycleScope
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val response = RetrofitClient.instance.getTrendAnalysis()
@@ -52,7 +76,6 @@ class XuHuong : Fragment() {
                     val trendResponse = response.body()!!
 
                     if (trendResponse.success) {
-                        // Nạp dữ liệu 12 tháng từ API vào biểu đồ
                         setupBarChart(trendResponse.data)
                     } else {
                         Toast.makeText(requireContext(), trendResponse.message, Toast.LENGTH_SHORT).show()
@@ -70,7 +93,6 @@ class XuHuong : Fragment() {
     private fun setupBarChart(monthlyData: List<Int>) {
         val entries = ArrayList<BarEntry>()
 
-        // Chạy vòng lặp 12 tháng (từ 0 đến 11)
         for (i in 0 until 12) {
             val f0Count = if (i < monthlyData.size) monthlyData[i].toFloat() else 0f
             entries.add(BarEntry(i.toFloat(), f0Count))
@@ -83,7 +105,6 @@ class XuHuong : Fragment() {
 
         dataSet.valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
-                // Ẩn số 0 để biểu đồ đỡ rối
                 return if (value == 0f) "" else value.toInt().toString()
             }
         }
@@ -114,7 +135,6 @@ class XuHuong : Fragment() {
         barChart.setFitBars(true)
         barChart.animateY(1000)
 
-        // Cập nhật lại giao diện
         barChart.invalidate()
     }
 }
