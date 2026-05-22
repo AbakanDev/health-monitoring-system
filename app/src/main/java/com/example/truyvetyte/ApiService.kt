@@ -1,5 +1,6 @@
 package com.example.truyvetyte.network
 
+import com.example.truyvetyte.CheckInRequest
 import com.example.truyvetyte.LoginRequest
 import com.example.truyvetyte.LoginResponse
 import com.example.truyvetyte.model.CachLy
@@ -10,6 +11,7 @@ import com.example.truyvetyte.model.RegisterRequest
 import com.example.truyvetyte.model.TiemChungResponse // Import model mới
 import com.example.truyvetyte.model.TrendResponse
 import com.example.truyvetyte.model.XetNghiemResponse
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -46,4 +48,9 @@ interface ApiService {
 
     @GET("api/health/trend-f0")
     suspend fun getTrendAnalysis(): Response<TrendResponse>
+
+    @POST("api/checkin")
+    suspend fun sendCheckIn(
+        @Body request: CheckInRequest
+    ): Response<ResponseBody>
 }
