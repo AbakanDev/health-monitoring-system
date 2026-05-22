@@ -139,7 +139,7 @@
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
                         <View android:layout_width="6dp" android:layout_height="match_parent" android:background="#4DD0E1"/>
                         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Vùng Đỏ" android:textColor="#90CAF9" android:textSize="11sp"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Vùng Nguy Hiểm" android:textColor="#90CAF9" android:textSize="11sp"/>
                             <TextView android:id="@+id/tv_stat_red_zone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="17.000" android:textColor="#5C94F0" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
                         </LinearLayout>
                     </LinearLayout>
