@@ -10,6 +10,7 @@ import com.example.truyvetyte.model.RegisterModels
 import com.example.truyvetyte.model.RegisterRequest
 import com.example.truyvetyte.model.TiemChungResponse // Import model mới
 import com.example.truyvetyte.model.TrendResponse
+import com.example.truyvetyte.model.VaccineRatesResponse
 import com.example.truyvetyte.model.XetNghiemResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -53,4 +54,7 @@ interface ApiService {
     suspend fun sendCheckIn(
         @Body request: CheckInRequest
     ): Response<ResponseBody>
+
+    @GET("api/health/vaccine-rates")
+    suspend fun getVaccineRates(): Response<VaccineRatesResponse>
 }
