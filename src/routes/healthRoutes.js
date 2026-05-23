@@ -14,5 +14,5 @@ router.get('/contact-stats/:cccd', verifyToken, healthDataController.getContactS
 router.get('/contact-history/:cccd', verifyToken, healthDataController.getContactHistory);
 router.get('/checkin-stats/:cccd', verifyToken, healthDataController.getCheckinStats);
 router.get('/checkin-history/:cccd', verifyToken, healthDataController.getCheckinHistory);
-
+router.get('/health-declaration-history/:cccd', verifyToken, healthDataController.getHealthDeclarationHistory);
 module.exports = router;

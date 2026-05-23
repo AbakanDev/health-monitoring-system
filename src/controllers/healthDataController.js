@@ -321,6 +321,43 @@ const getCheckinHistory = async (req, res) => {
     }
 };
 
+const getHealthDeclarationHistory = async (req, res) => {
+    try {
+        const cccd = req.params.cccd;
+
+        if (!cccd) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Vui lòng cung cấp số CCCD' 
+            });
+        }
+
+        // Gọi hàm từ service (thay healthService bằng tên biến bạn import)
+        const data = await healthService.getHealthDeclarationHistoryByCCCD(cccd);
+
+        if (data.length === 0) {
+            return res.status(200).json({
+                success: true,
+                message: 'Không có dữ liệu lịch sử khai báo y tế nào',
+                data: []
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Lấy lịch sử khai báo y tế thành công',
+            totalDeclarations: data.length,
+            data: data
+        });
+
+    } catch (error) {
+        console.error('Lỗi khi lấy lịch sử khai báo y tế:', error);
+        return res.status(500).json({ 
+            success: false, 
+            message: 'Lỗi server khi lấy lịch sử khai báo y tế' 
+        });
+    }
+};
 module.exports = {
     getVaccineInfo,
     getQuarantineStatus,
@@ -333,4 +370,5 @@ module.exports = {
     getContactHistory,
     getCheckinStats,
     getCheckinHistory,
+    getHealthDeclarationHistory,
 };

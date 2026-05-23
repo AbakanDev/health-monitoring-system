@@ -312,6 +312,26 @@ const getCheckinHistoryByCCCD = async (cccd) => {
     }
 };
 
+const getHealthDeclarationHistoryByCCCD = async (cccd) => {
+    try {
+        const query = `
+            SELECT 
+                ROW_NUMBER() OVER (ORDER BY t.ThoiGianKhaiBaoYTe ASC) AS LanKhaiBao,
+                DATE_FORMAT(t.ThoiGianKhaiBaoYTe, '%d/%m/%Y') AS Ngay,
+                DATE_FORMAT(t.ThoiGianKhaiBaoYTe, '%Hh%i') AS Gio
+            FROM TOKHAIYTE t
+            JOIN NGUOIDUNG n ON t.MaNguoiDung = n.MaNguoiDung
+            WHERE n.CCCD = ?
+            ORDER BY t.ThoiGianKhaiBaoYTe DESC;
+        `;
+        
+        const [rows] = await db.execute(query, [cccd]);
+        return rows; 
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     getVaccineDosesByCCCD,
     getActiveQuarantines,
@@ -323,4 +343,5 @@ module.exports = {
     getContactHistoryByCCCD,
     getCheckinStatsByCCCD,
     getCheckinHistoryByCCCD,
+    getHealthDeclarationHistoryByCCCD,
 };
