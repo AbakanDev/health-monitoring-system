@@ -2,7 +2,7 @@ const express = require('express');
 const authRoutes = require('./routes/authRoutes');
 const healthRoutes = require('./routes/healthRoutes'); // Thêm dòng này: Import healthRoutes
 require('dotenv').config({ path: '../.env' }); // Chỉ đường dẫn tới file .env ở thư mục gốc
-
+process.env.TZ = 'Asia/Ho_Chi_Minh';
 const app = express();
 
 // Middleware để Express hiểu được dữ liệu JSON gửi lên

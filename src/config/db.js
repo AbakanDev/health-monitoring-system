@@ -12,6 +12,10 @@ const pool = mysql.createPool({
     ssl: {
         ca: fs.readFileSync(path.join(__dirname, 'ca.pem'))
     },
+    // --- CẤU HÌNH FIX LỆCH GIỜ ---
+    timezone: '+07:00', // Ép driver MySQL luôn hiểu giờ GMT+7
+    dateStrings: true,  // Trả về ngày tháng dạng string thay vì Date object để tránh bị tự động cộng trừ giờ
+    // ----------------------------
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
