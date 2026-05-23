@@ -265,6 +265,53 @@ const getContactHistoryByCCCD = async (cccd) => {
     }
 };
 
+const getCheckinStatsByCCCD = async (cccd) => {
+    try {
+        const query = `
+            SELECT 
+                COUNT(c.MaLichSuCheckIn) AS TongLuotCheckIn,
+                SUM(CASE WHEN k.Capdovung = 3 THEN 1 ELSE 0 END) AS SoLuotNguyHiem,
+                SUM(CASE WHEN k.Capdovung = 2 THEN 1 ELSE 0 END) AS SoLuotNguyCo,
+                SUM(CASE WHEN k.Capdovung = 1 THEN 1 ELSE 0 END) AS SoLuotAnToan
+            FROM LICHSUCHECKIN c
+            JOIN KHUVUC k ON c.MaKhuVuc = k.MaKhuVuc
+            JOIN NGUOIDUNG n ON c.MaNguoiDung = n.MaNguoiDung
+            WHERE n.CCCD = ?;
+        `;
+        
+        const [rows] = await db.execute(query, [cccd]);
+        return rows[0]; // Trả về object đầu tiên vì query dùng hàm tổng hợp (COUNT, SUM)
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getCheckinHistoryByCCCD = async (cccd) => {
+    try {
+        const query = `
+            SELECT 
+                k.TenKhuVuc,
+                DATE_FORMAT(c.ThoiGianCheckIn, '%d/%m/%Y %H:%i') AS ThoiGianCheckIn,
+                CASE 
+                    WHEN k.Capdovung = 3 THEN N'Nguy Hiểm'
+                    WHEN k.Capdovung = 2 THEN N'Nguy Cơ'
+                    WHEN k.Capdovung = 1 THEN N'An Toàn'
+                    ELSE N'Chưa xác định'
+                END AS TrangThaiKhuVuc
+            FROM LICHSUCHECKIN c
+            JOIN KHUVUC k ON c.MaKhuVuc = k.MaKhuVuc
+            JOIN NGUOIDUNG n ON c.MaNguoiDung = n.MaNguoiDung
+            WHERE n.CCCD = ?
+            ORDER BY c.ThoiGianCheckIn DESC;
+        `;
+        
+        const [rows] = await db.execute(query, [cccd]);
+        return rows; 
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     getVaccineDosesByCCCD,
     getActiveQuarantines,
@@ -274,4 +321,6 @@ module.exports = {
     getDashboardStats,
     getContactStatsByCCCD,
     getContactHistoryByCCCD,
+    getCheckinStatsByCCCD,
+    getCheckinHistoryByCCCD,
 };

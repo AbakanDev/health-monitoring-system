@@ -12,4 +12,7 @@ router.get('/vaccine-rates', healthDataController.getVaccineRates);
 router.get('/dashboard-summary', healthDataController.getDashboardSummary);
 router.get('/contact-stats/:cccd', verifyToken, healthDataController.getContactStats);
 router.get('/contact-history/:cccd', verifyToken, healthDataController.getContactHistory);
+router.get('/checkin-stats/:cccd', verifyToken, healthDataController.getCheckinStats);
+router.get('/checkin-history/:cccd', verifyToken, healthDataController.getCheckinHistory);
+
 module.exports = router;

@@ -256,6 +256,71 @@ const getContactHistory = async (req, res) => {
     }
 };
 
+const getCheckinStats = async (req, res) => {
+    try {
+        const cccd = req.params.cccd;
+
+        if (!cccd) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Vui lòng cung cấp số CCCD' 
+            });
+        }
+
+        const data = await healthService.getCheckinStatsByCCCD(cccd);
+
+        return res.status(200).json({
+            success: true,
+            message: 'Lấy thống kê tổng quan check-in thành công',
+            data: data
+        });
+
+    } catch (error) {
+        console.error('Lỗi khi lấy thống kê check-in:', error);
+        return res.status(500).json({ 
+            success: false, 
+            message: 'Lỗi server khi lấy thống kê tổng quan check-in' 
+        });
+    }
+};
+
+const getCheckinHistory = async (req, res) => {
+    try {
+        const cccd = req.params.cccd;
+
+        if (!cccd) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Vui lòng cung cấp số CCCD' 
+            });
+        }
+
+        const data = await healthService.getCheckinHistoryByCCCD(cccd);
+
+        if (data.length === 0) {
+            return res.status(200).json({
+                success: true,
+                message: 'Không có dữ liệu lịch sử check-in nào',
+                data: []
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Lấy chi tiết lịch sử check-in thành công',
+            totalCheckins: data.length,
+            data: data
+        });
+
+    } catch (error) {
+        console.error('Lỗi khi lấy lịch sử check-in:', error);
+        return res.status(500).json({ 
+            success: false, 
+            message: 'Lỗi server khi lấy chi tiết lịch sử check-in' 
+        });
+    }
+};
+
 module.exports = {
     getVaccineInfo,
     getQuarantineStatus,
@@ -266,4 +331,6 @@ module.exports = {
     getDashboardSummary,
     getContactStats,
     getContactHistory,
+    getCheckinStats,
+    getCheckinHistory,
 };
