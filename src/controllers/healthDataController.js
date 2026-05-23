@@ -485,6 +485,35 @@ const submitImmigrationDeclaration = async (req, res) => {
     }
 };
 
+const submitCheckin = async (req, res) => {
+    try {
+        const { MaKhuVuc } = req.body;
+        const MaNguoiDung = req.user.MaNguoiDung; // từ verifyToken
+
+        if (!MaKhuVuc) {
+            return res.status(400).json({
+                success: false,
+                message: 'Vui lòng cung cấp mã khu vực (MaKhuVuc)'
+            });
+        }
+
+        const data = await healthService.createCheckin({ MaNguoiDung, MaKhuVuc });
+
+        return res.status(201).json({
+            success: true,
+            message: `Check-in thành công tại ${data.TenKhuVuc}`,
+            data: data
+        });
+
+    } catch (error) {
+        console.error('Lỗi khi check-in:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Lỗi server khi thực hiện check-in'
+        });
+    }
+};
+
 module.exports = {
     getVaccineInfo,
     getQuarantineStatus,
@@ -502,4 +531,5 @@ module.exports = {
     getImmigrationHistory,
     getCuaKhauList,
     submitImmigrationDeclaration,
+    submitCheckin
 };

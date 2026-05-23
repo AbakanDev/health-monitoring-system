@@ -457,6 +457,36 @@ const createImmigrationDeclaration = async ({ MaNguoiDung, MaCuaKhau }) => {
     }
 };
 
+const createCheckin = async ({ MaNguoiDung, MaKhuVuc }) => {
+    try {
+        const [result] = await db.execute(
+            `INSERT INTO LICHSUCHECKIN (MaNguoiDung, MaKhuVuc, ThoiGianCheckIn)
+             VALUES (?, ?, NOW())`,
+            [MaNguoiDung, MaKhuVuc]
+        );
+
+        // Trả về thông tin khu vực vừa check-in
+        const [rows] = await db.execute(
+            `SELECT 
+                k.TenKhuVuc,
+                DATE_FORMAT(c.ThoiGianCheckIn, '%d/%m/%Y %H:%i') AS ThoiGianCheckIn,
+                CASE 
+                    WHEN k.Capdovung = 3 THEN 'Nguy Hiểm'
+                    WHEN k.Capdovung = 2 THEN 'Nguy Cơ'
+                    WHEN k.Capdovung = 1 THEN 'An Toàn'
+                    ELSE 'Chưa xác định'
+                END AS TrangThaiKhuVuc
+             FROM LICHSUCHECKIN c
+             JOIN KHUVUC k ON c.MaKhuVuc = k.MaKhuVuc
+             WHERE c.MaLichSuCheckIn = ?`,
+            [result.insertId]
+        );
+
+        return rows[0];
+    } catch (error) {
+        throw error;
+    }
+};
 
 module.exports = {
     getVaccineDosesByCCCD,
@@ -474,4 +504,5 @@ module.exports = {
     getImmigrationHistoryByCCCD,
     getAllCuaKhau,
     createImmigrationDeclaration,
+    createCheckin,
 };
