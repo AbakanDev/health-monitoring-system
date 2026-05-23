@@ -4,6 +4,7 @@ import com.example.truyvetyte.CheckInRequest
 import com.example.truyvetyte.LoginRequest
 import com.example.truyvetyte.LoginResponse
 import com.example.truyvetyte.model.CachLyResponse
+import com.example.truyvetyte.model.CheckInResponse
 import com.example.truyvetyte.model.CheckinHistoryResponse
 import com.example.truyvetyte.model.CheckinStatsResponse
 import com.example.truyvetyte.model.ContactHistoryResponse
@@ -122,6 +123,11 @@ interface ApiService {
         @Body body: Map<String, String>
     ): Response<ImmigrationSubmitResponse>
 
+    @POST("api/health/checkin")
+    suspend fun sendCheckIn(
+        @Header("Authorization") token: String,
+        @Body body: Map<String, String>
+    ): Response<CheckInResponse>
 
 
 }
