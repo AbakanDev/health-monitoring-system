@@ -18,8 +18,7 @@ import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.text.SimpleDateFormat
-import java.util.*
+import java.util.concurrent.atomic.AtomicBoolean
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,21 +30,19 @@ class ScannerFragment : Fragment() {
     private lateinit var previewView: PreviewView
     private lateinit var cameraExecutor: ExecutorService
 
-    // Bước 1: Xử lý xin quyền Camera một cách hiện đại trong Fragment
+    // ── AtomicBoolean: thread-safe hơn @Volatile cho use case này ─────────────
+    private val isScanning = AtomicBoolean(true)
+
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
-        if (isGranted) {
-            startCamera()
-        } else {
-            Toast.makeText(requireContext(), "Bạn cần cấp quyền Camera để quét mã", Toast.LENGTH_SHORT).show()
-        }
+        if (isGranted) startCamera()
+        else Toast.makeText(requireContext(), "Bạn cần cấp quyền Camera để quét mã", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // Nạp layout quét mã mà bạn đã có sẵn
         val view = inflater.inflate(R.layout.qr_scanner_screen, container, false)
         previewView = view.findViewById(R.id.previewView)
         return view
@@ -55,109 +52,100 @@ class ScannerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        // Kiểm tra quyền ngay khi vào trang
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
-            == PackageManager.PERMISSION_GRANTED) {
-            startCamera()
-        } else {
-            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-        }
+            == PackageManager.PERMISSION_GRANTED
+        ) startCamera()
+        else requestPermissionLauncher.launch(Manifest.permission.CAMERA)
     }
 
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
-
         cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
-
             val preview = Preview.Builder().build().also {
                 it.setSurfaceProvider(previewView.surfaceProvider)
             }
-
             val imageAnalysis = ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
-
-            imageAnalysis.setAnalyzer(cameraExecutor) { imageProxy ->
-                processImageProxy(imageProxy)
-            }
+                .also { it.setAnalyzer(cameraExecutor) { proxy -> processImageProxy(proxy) } }
 
             try {
                 cameraProvider.unbindAll()
-                // QUAN TRỌNG: Dùng viewLifecycleOwner thay vì 'this'
-                cameraProvider.bindToLifecycle(
-                    viewLifecycleOwner, CameraSelector.DEFAULT_BACK_CAMERA, preview, imageAnalysis
-                )
+                cameraProvider.bindToLifecycle(viewLifecycleOwner, CameraSelector.DEFAULT_BACK_CAMERA, preview, imageAnalysis)
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e("ScannerFragment", "Lỗi khởi động camera", e)
             }
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
     @androidx.annotation.OptIn(ExperimentalGetImage::class)
     private fun processImageProxy(imageProxy: ImageProxy) {
-        val mediaImage = imageProxy.image
-        if (mediaImage != null) {
-            val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-            val scanner = BarcodeScanning.getClient()
-
-            scanner.process(image)
-                .addOnSuccessListener { barcodes ->
-                    for (barcode in barcodes) {
-                        val rawValue = barcode.rawValue
-                        if (rawValue != null) {
-                            // NGĂN CHẶN QUÉT LIÊN TỤC: Khi đã quét được 1 mã, tạm dừng xử lý tiếp
-                            // Bạn có thể dùng một biến flag 'isScanning = false' ở đây
-
-                            sendCheckInData(rawValue) // Gọi hàm gửi dữ liệu
-                        }
-                    }
-                }
-                .addOnCompleteListener {
-                    imageProxy.close()
-                }
+        // compareAndSet(true, false): chỉ 1 thread duy nhất vượt qua được
+        if (!isScanning.compareAndSet(true, false)) {
+            imageProxy.close()
+            return
         }
+
+        val mediaImage = imageProxy.image
+        if (mediaImage == null) {
+            isScanning.set(true) // trả lại flag nếu không có ảnh
+            imageProxy.close()
+            return
+        }
+
+        val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+        BarcodeScanning.getClient().process(image)
+            .addOnSuccessListener { barcodes ->
+                val rawValue = barcodes.firstOrNull()?.rawValue
+                if (rawValue != null) {
+                    Log.d("ScannerFragment", "QR đọc được: $rawValue") // debug giá trị QR
+                    sendCheckInData(rawValue)
+                } else {
+                    isScanning.set(true) // không tìm thấy mã → cho quét tiếp
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("ScannerFragment", "Lỗi đọc barcode", e)
+                isScanning.set(true)
+            }
+            .addOnCompleteListener { imageProxy.close() }
     }
 
     private fun sendCheckInData(maKhuVuc: String) {
-        // 1. AI: Lấy MaNguoiDung (Giả sử bạn đã lưu vào SharedPreferences khi đăng nhập)
         val sharedPref = requireActivity().getSharedPreferences("AppPrefs", 0)
-        val maNguoiDung = sharedPref.getString("USER_ID", "anonymous") ?: "anonymous"
+        val token = sharedPref.getString("TOKEN", "") ?: ""
 
-        // 2. LÚC NÀO: Lấy thời gian hiện tại
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        val thoiGian = formatter.format(Date())
+        Log.d("ScannerFragment", "Token gửi lên: '$token'") // debug token có rỗng không
 
-        // 3. ĐÓNG GÓI DỮ LIỆU
-        val request = CheckInRequest(maNguoiDung, maKhuVuc, thoiGian)
-
-        // 4. GỬI LÊN SERVER
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // Lưu ý: Đảm bảo RetrofitClient của bạn đã có hàm sendCheckIn
-                val response = RetrofitClient.instance.sendCheckIn(request)
+                val response = RetrofitClient.instance.sendCheckIn(
+                    token = "Bearer $token",
+                    body  = mapOf("MaKhuVuc" to maKhuVuc)
+                )
 
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Toast.makeText(requireContext(), "✅ Check-in thành công tại: $maKhuVuc", Toast.LENGTH_LONG).show()
-                        // Có thể chuyển người dùng sang trang Lịch Sử sau khi thành công
+                        val data = response.body()?.data
+                        Toast.makeText(
+                            requireContext(),
+                            "✅ ${data?.tenKhuVuc ?: maKhuVuc}\n${data?.trangThaiKhuVuc} • ${data?.thoiGianCheckIn}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        // isScanning giữ false → không quét lại sau khi thành công
                     } else {
-                        Toast.makeText(requireContext(), "❌ Lỗi: ${response.code()}", Toast.LENGTH_SHORT).show()
-                        withContext(Dispatchers.Main) {
-                            if (response.isSuccessful) {
-                                // ... thành công ...
-                            } else {
-                                // In ra mã lỗi và nội dung lỗi từ Server
-                                val errorBody = response.errorBody()?.string()
-                                Log.e("ScannerError", "Mã lỗi: ${response.code()} - Nội dung: $errorBody")
-                                Toast.makeText(requireContext(), "Lỗi: ${response.code()} - Kiểm tra Logcat", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                        val errorBody = response.errorBody()?.string()
+                        Log.e("ScannerFragment", "Lỗi ${response.code()}: $errorBody")
+                        Toast.makeText(requireContext(), "❌ Lỗi ${response.code()}", Toast.LENGTH_SHORT).show()
+                        isScanning.set(true) // lỗi → cho phép quét lại
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "💥 Lỗi kết nối: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("ScannerFragment", "Lỗi kết nối", e)
+                    Toast.makeText(requireContext(), "💥 ${e.message}", Toast.LENGTH_SHORT).show()
+                    isScanning.set(true)
                 }
             }
         }
@@ -167,5 +155,4 @@ class ScannerFragment : Fragment() {
         super.onDestroyView()
         cameraExecutor.shutdown()
     }
-
 }
