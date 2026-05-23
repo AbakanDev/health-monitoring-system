@@ -433,6 +433,58 @@ const getImmigrationHistory = async (req, res) => {
     }
 };
 
+const getCuaKhauList = async (req, res) => {
+    try {
+        const data = await healthService.getAllCuaKhau();
+        return res.status(200).json({
+            success: true,
+            message: 'Lấy danh sách cửa khẩu thành công',
+            data
+        });
+    } catch (error) {
+        console.error('Lỗi khi lấy danh sách cửa khẩu:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Lỗi server khi lấy danh sách cửa khẩu'
+        });
+    }
+};
+
+const submitImmigrationDeclaration = async (req, res) => {
+    try {
+        const { MaCuaKhau } = req.body;
+        const MaNguoiDung = req.user.MaNguoiDung; // từ verifyToken
+
+        console.log('>>> req.body:', req.body);
+        console.log('>>> MaCuaKhau:', MaCuaKhau);
+        console.log('>>> MaNguoiDung:', MaNguoiDung);
+
+        if (!MaCuaKhau) {
+            return res.status(400).json({
+                success: false,
+                message: 'Vui lòng chọn cửa khẩu'
+            });
+        }
+
+        const result = await healthService.createImmigrationDeclaration({
+            MaNguoiDung,
+            MaCuaKhau
+        });
+
+        return res.status(201).json({
+            success: true,
+            message: 'Khai báo xuất nhập cảnh thành công',
+            data: { MaToKhaiXNC: result.MaToKhaiXNC }
+        });
+    } catch (error) {
+        console.error('Lỗi khi tạo tờ khai XNC:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Lỗi server khi tạo tờ khai xuất nhập cảnh'
+        });
+    }
+};
+
 module.exports = {
     getVaccineInfo,
     getQuarantineStatus,
@@ -448,5 +500,6 @@ module.exports = {
     getHealthDeclarationHistory,
     submitHealthDeclaration,
     getImmigrationHistory,
-    
+    getCuaKhauList,
+    submitImmigrationDeclaration,
 };

@@ -405,6 +405,59 @@ const getImmigrationHistoryByCCCD = async (cccd) => {
     }
 };
 
+const getAllCuaKhau = async () => {
+    try {
+        const query = `
+            SELECT MaCuaKhau, TenCuaKhau, LoaiCuaKhau, TrangThai
+            FROM CUAKHAU
+            ORDER BY LoaiCuaKhau, TenCuaKhau;
+        `;
+        const [rows] = await db.execute(query);
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Tạo tờ khai xuất nhập cảnh
+const createImmigrationDeclaration = async ({ MaNguoiDung, MaCuaKhau }) => {
+    const MaToKhaiXNC = `XNC_${Date.now()}`;
+    const conn = await db.getConnection();
+    try {
+        await conn.beginTransaction();
+
+        await conn.execute(
+            `INSERT INTO TOKHAIXNC (MaToKhaiXNC, ThoiGianKhaiBaoXNC, MaNguoiDung, MaCuaKhau)
+             VALUES (?, NOW(), ?, ?)`,
+            [MaToKhaiXNC, MaNguoiDung, MaCuaKhau]
+        );
+
+        // Đọc lại bản ghi vừa tạo kèm thông tin cửa khẩu
+        const [rows] = await conn.execute(
+            `SELECT 
+                xnc.MaToKhaiXNC,
+                DATE_FORMAT(xnc.ThoiGianKhaiBaoXNC, '%d/%m/%Y') AS Ngay,
+                DATE_FORMAT(xnc.ThoiGianKhaiBaoXNC, '%Hh%i')    AS Gio,
+                ck.TenCuaKhau,
+                ck.LoaiCuaKhau,
+                ck.TrangThai AS TrangThaiCuaKhau
+             FROM TOKHAIXNC xnc
+             JOIN CUAKHAU ck ON xnc.MaCuaKhau = ck.MaCuaKhau
+             WHERE xnc.MaToKhaiXNC = ?`,
+            [MaToKhaiXNC]
+        );
+
+        await conn.commit();
+        return { MaToKhaiXNC, toKhai: rows[0] };
+    } catch (error) {
+        await conn.rollback();
+        throw error;
+    } finally {
+        conn.release();
+    }
+};
+
+
 module.exports = {
     getVaccineDosesByCCCD,
     getActiveQuarantines,
@@ -418,5 +471,7 @@ module.exports = {
     getCheckinHistoryByCCCD,
     getHealthDeclarationHistoryByCCCD,
     createHealthDeclaration,
-    getImmigrationHistoryByCCCD
+    getImmigrationHistoryByCCCD,
+    getAllCuaKhau,
+    createImmigrationDeclaration,
 };

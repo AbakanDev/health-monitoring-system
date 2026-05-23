@@ -17,5 +17,7 @@ router.get('/checkin-history/:cccd', verifyToken, healthDataController.getChecki
 router.get('/health-declaration-history/:cccd', verifyToken, healthDataController.getHealthDeclarationHistory);
 router.post('/health-declaration', verifyToken, healthDataController.submitHealthDeclaration);
 router.get('/immigration-history/:cccd', healthDataController.getImmigrationHistory);
+router.get('/cua-khau', verifyToken, healthDataController.getCuaKhauList);
+router.post('/immigration-declaration', verifyToken, healthDataController.submitImmigrationDeclaration);
 
 module.exports = router;
