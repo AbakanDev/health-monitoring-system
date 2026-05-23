@@ -395,6 +395,44 @@ const submitHealthDeclaration = async (req, res) => {
     }
 };
 
+const getImmigrationHistory = async (req, res) => {
+    try {
+        const cccd = req.params.cccd;
+
+        if (!cccd) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Vui lòng cung cấp số CCCD' 
+            });
+        }
+
+        // Gọi hàm từ service (đảm bảo bạn đã import healthService)
+        const data = await healthService.getImmigrationHistoryByCCCD(cccd);
+
+        if (data.length === 0) {
+            return res.status(200).json({
+                success: true,
+                message: 'Không có dữ liệu lịch sử xuất nhập cảnh nào',
+                data: []
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Lấy lịch sử xuất nhập cảnh thành công',
+            totalDeclarations: data.length,
+            data: data
+        });
+
+    } catch (error) {
+        console.error('Lỗi khi lấy lịch sử xuất nhập cảnh:', error);
+        return res.status(500).json({ 
+            success: false, 
+            message: 'Lỗi server khi lấy lịch sử xuất nhập cảnh' 
+        });
+    }
+};
+
 module.exports = {
     getVaccineInfo,
     getQuarantineStatus,
@@ -409,4 +447,6 @@ module.exports = {
     getCheckinHistory,
     getHealthDeclarationHistory,
     submitHealthDeclaration,
+    getImmigrationHistory,
+    
 };

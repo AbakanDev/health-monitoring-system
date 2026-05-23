@@ -379,6 +379,32 @@ const createHealthDeclaration = async (declarationData) => {
     }
 };
 
+const getImmigrationHistoryByCCCD = async (cccd) => {
+    try {
+        const query = `
+            SELECT 
+                xnc.MaToKhaiXNC,
+                DATE_FORMAT(xnc.ThoiGianKhaiBaoXNC, '%d/%m/%Y') AS Ngay,
+                DATE_FORMAT(xnc.ThoiGianKhaiBaoXNC, '%Hh%i') AS Gio,
+                ck.TenCuaKhau,
+                ck.LoaiCuaKhau,
+                ck.TrangThai AS TrangThaiCuaKhau,
+                nd.HoTen,
+                nd.CCCD
+            FROM TOKHAIXNC xnc
+            JOIN CUAKHAU ck ON xnc.MaCuaKhau = ck.MaCuaKhau
+            JOIN NGUOIDUNG nd ON xnc.MaNguoiDung = nd.MaNguoiDung
+            WHERE nd.CCCD = ?
+            ORDER BY xnc.ThoiGianKhaiBaoXNC DESC;
+        `;
+        
+        const [rows] = await db.execute(query, [cccd]);
+        return rows; 
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     getVaccineDosesByCCCD,
     getActiveQuarantines,
@@ -391,5 +417,6 @@ module.exports = {
     getCheckinStatsByCCCD,
     getCheckinHistoryByCCCD,
     getHealthDeclarationHistoryByCCCD,
-    createHealthDeclaration
+    createHealthDeclaration,
+    getImmigrationHistoryByCCCD
 };
