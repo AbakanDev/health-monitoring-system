@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -20,13 +21,8 @@ import kotlinx.coroutines.withContext
 
 class KhaiBao : Fragment() {
 
-    // Khai báo các view từ XML
     private lateinit var tvChuaKhaiBao: TextView
-    private lateinit var layoutLan1: RelativeLayout
-    private lateinit var layoutLan2: RelativeLayout
-    private lateinit var tvNgayKhaiBaoLan1: TextView
-    private lateinit var tvNgayKhaiBaoLan2: TextView
-    private lateinit var dividerKhaiBao: View
+    private lateinit var layoutKhaiBaoContainer: LinearLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,32 +35,26 @@ class KhaiBao : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Ánh xạ các View phần lịch sử
+        // 1. Ánh xạ View
         tvChuaKhaiBao = view.findViewById(R.id.tvChuaKhaiBao)
-        layoutLan1 = view.findViewById(R.id.layoutLan1)
-        layoutLan2 = view.findViewById(R.id.layoutLan2)
-        tvNgayKhaiBaoLan1 = view.findViewById(R.id.tvNgayKhaiBaoLan1)
-        tvNgayKhaiBaoLan2 = view.findViewById(R.id.tvNgayKhaiBaoLan2)
-        dividerKhaiBao = view.findViewById(R.id.dividerKhaiBao)
+        layoutKhaiBaoContainer = view.findViewById(R.id.layoutKhaiBaoContainer)
 
-        // Ẩn lịch sử mặc định cho đến khi API trả về
-        layoutLan1.visibility = View.GONE
-        layoutLan2.visibility = View.GONE
-        dividerKhaiBao.visibility = View.GONE
+        // Ẩn mặc định
+        tvChuaKhaiBao.visibility = View.GONE
+        layoutKhaiBaoContainer.removeAllViews()
 
-        // 2. Chức năng nút Hoàn tất
+        // 2. Nút Hoàn tất
         val btnGo = view.findViewById<Button>(R.id.btnHoanTat1)
         btnGo.setOnClickListener {
             val intent = Intent(requireContext(), ChucMungKhaiBao::class.java)
             startActivity(intent)
         }
 
-        // 3. Gọi API lấy lịch sử khai báo
+        // 3. Gọi API lịch sử khai báo
         fetchKhaiBaoHistory()
     }
 
     private fun fetchKhaiBaoHistory() {
-        // Lấy token và cccd từ SharedPreferences giống màn hình Lịch Sử Truy Vết
         val sharedPreferences = requireActivity().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("TOKEN", null)
         val cccd = sharedPreferences.getString("CCCD", null)
@@ -74,49 +64,103 @@ class KhaiBao : Fragment() {
             return
         }
 
-        val bearerToken = "Bearer $token"
-
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // Gọi API
-                val response = RetrofitClient.instance.getKhaiBaoHistory(bearerToken, cccd)
+                val response = RetrofitClient.instance.getKhaiBaoHistory("Bearer $token", cccd)
 
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         val body = response.body()
+
                         if (body != null && body.success && !body.data.isNullOrEmpty()) {
-                            val listData = body.data
-
-                            // Ẩn thông báo "Chưa khai báo"
                             tvChuaKhaiBao.visibility = View.GONE
+                            layoutKhaiBaoContainer.removeAllViews()
 
-                            // Dựa theo câu query SQL của bạn, data trả về đã xếp DESC (mới nhất xếp trước)
-                            // Map Item mới nhất (Index 0) vào layoutLan2 (XML của bạn thiết kế Lan2 ở trên Lan1)
-                            if (listData.isNotEmpty()) {
-                                layoutLan2.visibility = View.VISIBLE
-                                tvNgayKhaiBaoLan2.text = "${listData[0].Ngay} - ${listData[0].Gio}"
-                            }
+                            // API trả DESC (mới nhất index 0),
+                            // forEachIndexed để biết vị trí thêm divider
+                            body.data.forEachIndexed { index, item ->
 
-                            // Map Item cũ hơn (Index 1) vào layoutLan1 nếu có
-                            if (listData.size > 1) {
-                                dividerKhaiBao.visibility = View.VISIBLE
-                                layoutLan1.visibility = View.VISIBLE
-                                tvNgayKhaiBaoLan1.text = "${listData[1].Ngay} - ${listData[1].Gio}"
+                                // Divider (trừ item đầu tiên)
+                                if (index > 0) {
+                                    val divider = View(requireContext()).apply {
+                                        layoutParams = LinearLayout.LayoutParams(
+                                            LinearLayout.LayoutParams.MATCH_PARENT, 1
+                                        ).also { params ->
+                                            params.marginStart = 16.dpToPx()
+                                            params.marginEnd = 16.dpToPx()
+                                        }
+                                        setBackgroundColor(0xFFE0E0E0.toInt())
+                                    }
+                                    layoutKhaiBaoContainer.addView(divider)
+                                }
+
+                                // Row chứa "Lần X" và ngày giờ
+                                val row = RelativeLayout(requireContext()).apply {
+                                    layoutParams = LinearLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.MATCH_PARENT,
+                                        LinearLayout.LayoutParams.WRAP_CONTENT
+                                    )
+                                    setPadding(
+                                        16.dpToPx(),
+                                        12.dpToPx(),
+                                        16.dpToPx(),
+                                        12.dpToPx()
+                                    )
+                                }
+
+                                // Ép kiểu String → Int, fallback về index + 1 nếu lỗi
+                                val lanSo = item.LanKhaiBao.toIntOrNull() ?: (index + 1)
+
+                                // TextView "Lần X"
+                                val tvLanId = View.generateViewId()
+                                val tvLan = TextView(requireContext()).apply {
+                                    id = tvLanId
+                                    text = "Lần $lanSo"
+                                    textSize = 20f
+                                    setTextColor(0xFF79A9F5.toInt())
+                                    setTypeface(typeface, android.graphics.Typeface.BOLD)
+                                    layoutParams = RelativeLayout.LayoutParams(
+                                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                                    ).also { params ->
+                                        params.addRule(RelativeLayout.ALIGN_PARENT_START)
+                                        params.addRule(RelativeLayout.CENTER_VERTICAL)
+                                    }
+                                }
+
+                                // TextView ngày - giờ
+                                val tvNgayGio = TextView(requireContext()).apply {
+                                    text = "${item.Ngay} - ${item.Gio}"
+                                    textSize = 14f
+                                    setTextColor(0xFF92BEFA.toInt())
+                                    setTypeface(typeface, android.graphics.Typeface.BOLD)
+                                    layoutParams = RelativeLayout.LayoutParams(
+                                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                                    ).also { params ->
+                                        params.addRule(RelativeLayout.ALIGN_PARENT_END)
+                                        params.addRule(RelativeLayout.CENTER_VERTICAL)
+                                    }
+                                }
+
+                                row.addView(tvLan)
+                                row.addView(tvNgayGio)
+                                layoutKhaiBaoContainer.addView(row)
                             }
 
                         } else {
-                            // Không có data -> Hiện chữ "Bạn chưa có lịch sử khai báo"
+                            // Không có data
                             tvChuaKhaiBao.visibility = View.VISIBLE
-                            layoutLan1.visibility = View.GONE
-                            layoutLan2.visibility = View.GONE
-                            dividerKhaiBao.visibility = View.GONE
+                            layoutKhaiBaoContainer.removeAllViews()
                         }
+
                     } else {
                         Log.e("KhaiBao", "Lỗi Server: ${response.code()}")
                         tvChuaKhaiBao.visibility = View.VISIBLE
                         tvChuaKhaiBao.text = "Không thể tải lịch sử khai báo"
                     }
                 }
+
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Log.e("KhaiBao", "Lỗi kết nối: ${e.message}")
@@ -126,4 +170,8 @@ class KhaiBao : Fragment() {
             }
         }
     }
+
+    // Extension function chuyển dp → px
+    private fun Int.dpToPx(): Int =
+        (this * resources.displayMetrics.density).toInt()
 }

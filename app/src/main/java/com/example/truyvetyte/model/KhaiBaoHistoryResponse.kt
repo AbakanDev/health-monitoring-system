@@ -8,7 +8,7 @@ data class KhaiBaoHistoryResponse(
 )
 
 data class KhaiBaoHistoryItem(
-    val LanKhaiBao: Int,
+    val LanKhaiBao: String,
     val Ngay: String,
     val Gio: String
 )
