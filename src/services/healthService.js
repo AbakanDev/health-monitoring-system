@@ -332,6 +332,53 @@ const getHealthDeclarationHistoryByCCCD = async (cccd) => {
     }
 };
 
+const createHealthDeclaration = async (declarationData) => {
+    const { MaNguoiDung, TiepXucF0, CoBenhNen, ChiTietBenhNen, DiVeTuVungDich, danhSachTrieuChung } = declarationData;
+
+    const MaToKhai = `TK_${Date.now()}`;
+
+    const conn = await db.getConnection();
+    try {
+        await conn.beginTransaction();
+
+        // 1. Tạo tờ khai y tế
+        await conn.execute(
+            `INSERT INTO TOKHAIYTE 
+                (MaToKhai, ThoiGianKhaiBaoYTe, TiepXucF0, CoBenhNen, ChiTietBenhNen, DiVeTuVungDich, MaNguoiDung)
+             VALUES (?, NOW(), ?, ?, ?, ?, ?)`,
+            [MaToKhai, TiepXucF0, CoBenhNen, ChiTietBenhNen || null, DiVeTuVungDich, MaNguoiDung]
+        );
+
+        // 2. Ghi nhận từng triệu chứng (nếu có)
+        if (danhSachTrieuChung && danhSachTrieuChung.length > 0) {
+            const values = danhSachTrieuChung.map(maTC => [MaToKhai, maTC]);
+            await conn.query(
+                `INSERT INTO GHINHANTRIEUCHUNG (MaToKhai, MaTrieuChung) VALUES ?`,
+                [values]
+            );
+        }
+
+        // 3. Đọc lại bản ghi vừa tạo — cùng format với getHealthDeclarationHistoryByCCCD
+        const [rows] = await conn.execute(
+            `SELECT 
+                1 AS LanKhaiBao,
+                DATE_FORMAT(ThoiGianKhaiBaoYTe, '%d/%m/%Y') AS Ngay,
+                DATE_FORMAT(ThoiGianKhaiBaoYTe, '%Hh%i') AS Gio
+             FROM TOKHAIYTE
+             WHERE MaToKhai = ?`,
+            [MaToKhai]
+        );
+
+        await conn.commit();
+        return { MaToKhai, khaiBao: rows[0] }; // khaiBao có Ngay + Gio khớp với history
+    } catch (error) {
+        await conn.rollback();
+        throw error;
+    } finally {
+        conn.release();
+    }
+};
+
 module.exports = {
     getVaccineDosesByCCCD,
     getActiveQuarantines,
@@ -344,4 +391,5 @@ module.exports = {
     getCheckinStatsByCCCD,
     getCheckinHistoryByCCCD,
     getHealthDeclarationHistoryByCCCD,
+    createHealthDeclaration
 };

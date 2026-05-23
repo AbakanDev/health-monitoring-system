@@ -358,6 +358,43 @@ const getHealthDeclarationHistory = async (req, res) => {
         });
     }
 };
+
+const submitHealthDeclaration = async (req, res) => {
+    try {
+        const { TiepXucF0, CoBenhNen, ChiTietBenhNen, DiVeTuVungDich, danhSachTrieuChung } = req.body;
+        const MaNguoiDung = req.user.MaNguoiDung; // Lấy từ token đã verify
+
+        if (TiepXucF0 === undefined || CoBenhNen === undefined || DiVeTuVungDich === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: 'Thiếu thông tin bắt buộc trong tờ khai'
+            });
+        }
+
+        const result = await healthService.createHealthDeclaration({
+            MaNguoiDung,
+            TiepXucF0,
+            CoBenhNen,
+            ChiTietBenhNen,
+            DiVeTuVungDich,
+            danhSachTrieuChung // Ví dụ: ['TC001', 'TC002', 'TC004']
+        });
+
+        return res.status(201).json({
+            success: true,
+            message: 'Khai báo y tế thành công',
+            data: { MaToKhai: result.MaToKhai }
+        });
+
+    } catch (error) {
+        console.error('Lỗi khi tạo tờ khai y tế:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Lỗi server khi tạo tờ khai y tế'
+        });
+    }
+};
+
 module.exports = {
     getVaccineInfo,
     getQuarantineStatus,
@@ -371,4 +408,5 @@ module.exports = {
     getCheckinStats,
     getCheckinHistory,
     getHealthDeclarationHistory,
+    submitHealthDeclaration,
 };
