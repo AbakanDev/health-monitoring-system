@@ -4,8 +4,16 @@ import com.example.truyvetyte.CheckInRequest
 import com.example.truyvetyte.LoginRequest
 import com.example.truyvetyte.LoginResponse
 import com.example.truyvetyte.model.CachLyResponse
+import com.example.truyvetyte.model.CheckinHistoryResponse
+import com.example.truyvetyte.model.CheckinStatsResponse
+import com.example.truyvetyte.model.ContactHistoryResponse
+import com.example.truyvetyte.model.ContactStatsResponse
+import com.example.truyvetyte.model.CuaKhauListResponse
 import com.example.truyvetyte.model.DashboardSummaryResponse
 import com.example.truyvetyte.model.HealthResponse
+import com.example.truyvetyte.model.ImmigrationSubmitResponse
+import com.example.truyvetyte.model.KhaiBaoRequest
+import com.example.truyvetyte.model.KhaiBaoSubmitResponse
 import com.example.truyvetyte.model.RegisterModels
 import com.example.truyvetyte.model.RegisterRequest
 import com.example.truyvetyte.model.TiemChungResponse // Import model mới
@@ -60,4 +68,60 @@ interface ApiService {
 
     @GET("api/health/dashboard-summary")
     suspend fun getDashboardSummary(): Response<DashboardSummaryResponse>
+
+    @GET("api/health/contact-stats/{cccd}")
+    suspend fun getContactStats(
+        @Header("Authorization") token: String,
+        @Path("cccd") cccd: String
+    ): Response<ContactStatsResponse>
+
+    @GET("api/health/contact-history/{cccd}")
+    suspend fun getContactHistory(
+        @Header("Authorization") token: String,
+        @Path("cccd") cccd: String
+    ): Response<ContactHistoryResponse>
+
+    @GET("api/health/checkin-stats/{cccd}")
+    suspend fun getCheckinStats(
+        @Header("Authorization") token: String,
+        @Path("cccd") cccd: String
+    ): Response<CheckinStatsResponse>
+
+    @GET("api/health/checkin-history/{cccd}")
+    suspend fun getCheckinHistory(
+        @Header("Authorization") token: String,
+        @Path("cccd") cccd: String
+    ): Response<CheckinHistoryResponse>
+
+    @GET("api/health/health-declaration-history/{cccd}")
+    suspend fun getKhaiBaoHistory(
+        @Header("Authorization") token: String,
+        @Path("cccd") cccd: String
+    ): Response<com.example.truyvetyte.model.KhaiBaoHistoryResponse>
+
+    @POST("api/health/health-declaration")
+    suspend fun submitKhaiBao(
+        @Header("Authorization") token: String,
+        @Body request: KhaiBaoRequest
+    ): Response<KhaiBaoSubmitResponse>
+
+    @GET("api/health/immigration-history/{cccd}")
+    suspend fun getImmigrationHistory(
+        @Header("Authorization") token: String,
+        @Path("cccd") cccd: String
+    ): Response<com.example.truyvetyte.model.ImmigrationHistoryResponse>
+
+    @GET("api/health/cua-khau")
+    suspend fun getCuaKhauList(
+        @Header("Authorization") token: String
+    ): Response<CuaKhauListResponse>
+
+    @POST("api/health/immigration-declaration")
+    suspend fun submitImmigrationDeclaration(
+        @Header("Authorization") token: String,
+        @Body body: Map<String, String>
+    ): Response<ImmigrationSubmitResponse>
+
+
+
 }
