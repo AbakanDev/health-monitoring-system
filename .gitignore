@@ -26,7 +26,7 @@ local.properties
 # Bỏ qua thư mục captures và navigation của Android Studio
 captures/
 .navigation/
-
+.idea/
 # Bỏ qua file cấu hình cá nhân của IntelliJ / Android Studio
 *.iml
 .idea/workspace.xml

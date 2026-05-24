@@ -3,6 +3,8 @@ package com.example.truyvetyte.network
 import com.example.truyvetyte.CheckInRequest
 import com.example.truyvetyte.LoginRequest
 import com.example.truyvetyte.LoginResponse
+import com.example.truyvetyte.model.AiAskRequest
+import com.example.truyvetyte.model.AiAskResponse
 import com.example.truyvetyte.model.CachLyResponse
 import com.example.truyvetyte.model.CheckInResponse
 import com.example.truyvetyte.model.CheckinHistoryResponse
@@ -129,5 +131,7 @@ interface ApiService {
         @Body body: Map<String, String>
     ): Response<CheckInResponse>
 
+    @POST("api/health/ai/ask")
+    suspend fun askHealthAI(@Body body: AiAskRequest): Response<AiAskResponse>
 
 }

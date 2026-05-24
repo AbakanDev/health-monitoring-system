@@ -1,61 +1,93 @@
 package com.example.truyvetyte
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.truyvetyte.model.AiAskRequest
+import com.example.truyvetyte.network.RetrofitClient
+import kotlinx.coroutines.launch
 
 class HelpChatBotActivity : AppCompatActivity() {
 
     private val chatList = mutableListOf<ChatMessage>()
     private lateinit var adapter: ChatAdapter
+    private lateinit var rvChat: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // KẾT NỐI VỚI LAYOUT SẴN CÓ CỦA BẠN BẠN
         setContentView(R.layout.help_chatbot_screen)
-        val rvChat = findViewById<RecyclerView>(R.id.rv_chat)
+
+        rvChat = findViewById(R.id.rv_chat)
         val etMessage = findViewById<EditText>(R.id.et_message)
-        val btnSend = findViewById<ImageView>(R.id.btn_send) // Thay bằng ID nút gửi của bạn
+        val btnSend = findViewById<ImageView>(R.id.btn_send)
 
         adapter = ChatAdapter(chatList)
         rvChat.layoutManager = LinearLayoutManager(this)
         rvChat.adapter = adapter
 
+        // Tin nhắn chào mừng
+        addMessage("Xin chào! Mình là trợ lý sức khỏe AI. Bạn cần hỏi gì về dịch tễ, tiêm chủng hay khai báo y tế không?", isBot = true)
+
         btnSend.setOnClickListener {
             val userText = etMessage.text.toString().trim()
             if (userText.isNotEmpty()) {
-                // 1. Thêm tin nhắn của User
-                addMessage(userText, false)
+                addMessage(userText, isBot = false)
                 etMessage.text.clear()
-
-                // 2. Bot trả lời sau 1 khoảng thời gian ngắn
-                Handler(Looper.getMainLooper()).postDelayed({
-                    botResponse(userText)
-                }, 500)
+                // Hiện "đang trả lời..." trong khi chờ
+                addMessage("⏳ Đang xử lý...", isBot = true)
+                askAI(userText)
             }
         }
     }
+
+    private fun askAI(question: String) {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.instance.askHealthAI(
+                    body = AiAskRequest(question = question)
+                )
+
+                // Xoá tin nhắn "đang xử lý..." vừa thêm
+                removeLastBotMessage()
+
+                if (response.isSuccessful) {
+                    val answer = response.body()?.answer
+                    if (!answer.isNullOrBlank()) {
+                        addMessage(answer, isBot = true)
+                    } else {
+                        addMessage("Xin lỗi, mình không nhận được phản hồi. Bạn thử lại nhé!", isBot = true)
+                    }
+                } else {
+                    val errorMsg = when (response.code()) {
+                        503 -> "AI đang quá tải, bạn vui lòng thử lại sau ít phút nhé."
+                        400 -> "Câu hỏi không hợp lệ, bạn thử diễn đạt lại xem sao."
+                        else -> "Có lỗi xảy ra (${response.code()}), bạn thử lại sau nhé."
+                    }
+                    addMessage(errorMsg, isBot = true)
+                }
+
+            } catch (e: Exception) {
+                removeLastBotMessage()
+                addMessage("Không kết nối được server. Kiểm tra mạng và thử lại nhé!", isBot = true)
+            }
+        }
+    }
+
     private fun addMessage(text: String, isBot: Boolean) {
         chatList.add(ChatMessage(text, isBot))
         adapter.notifyItemInserted(chatList.size - 1)
-        findViewById<RecyclerView>(R.id.rv_chat).scrollToPosition(chatList.size - 1)
+        rvChat.scrollToPosition(chatList.size - 1)
     }
 
-    private fun botResponse(userQuery: String) {
-        val answer = when {
-            userQuery.contains("chào", ignoreCase = true) -> "Chào bạn! Mình có thể giúp gì cho bạn?"
-            userQuery.contains("khai báo", ignoreCase = true) -> "Bạn hãy nhấn vào nút Khai Báo ở thanh menu bên dưới nhé."
-            userQuery.contains("covid", ignoreCase = true) -> "Hãy luôn đeo khẩu trang và rửa tay sát khuẩn bạn nhé!"
-            else -> "Xin lỗi, mình chưa hiểu câu hỏi. Bạn có thể hỏi về 'khai báo' hoặc 'triệu chứng' không?"
+    private fun removeLastBotMessage() {
+        val lastIndex = chatList.indexOfLast { it.isBot }
+        if (lastIndex != -1) {
+            chatList.removeAt(lastIndex)
+            adapter.notifyItemRemoved(lastIndex)
         }
-        addMessage(answer, true)
     }
 }
