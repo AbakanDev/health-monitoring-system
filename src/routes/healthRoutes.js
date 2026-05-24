@@ -20,5 +20,6 @@ router.get('/immigration-history/:cccd', healthDataController.getImmigrationHist
 router.get('/cua-khau', verifyToken, healthDataController.getCuaKhauList);
 router.post('/immigration-declaration', verifyToken, healthDataController.submitImmigrationDeclaration);
 router.post('/checkin', verifyToken, healthDataController.submitCheckin);
+router.post("/ai/ask", healthDataController.askHealthAI);
 
 module.exports = router;

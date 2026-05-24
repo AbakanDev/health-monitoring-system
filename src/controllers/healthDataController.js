@@ -1,4 +1,5 @@
 const healthService = require('../services/healthService');
+const { askGemini } = require('../services/aiService');
 
 const getVaccineInfo = async (req, res) => {
     try {
@@ -514,6 +515,49 @@ const submitCheckin = async (req, res) => {
     }
 };
 
+const askHealthAI = async (req, res) => {
+    try {
+        const { question, healthData } = req.body;
+        // healthData là object tuỳ chọn, frontend gửi lên nếu muốn AI phân tích
+
+        if (!question || question.trim() === '') {
+            return res.status(400).json({
+                success: false,
+                message: 'Vui lòng nhập câu hỏi'
+            });
+        }
+
+        const aiResponse = await askGemini(question, healthData || null);
+
+        return res.status(200).json({
+            success: true,
+            answer: aiResponse
+        });
+
+    } catch (error) {
+        console.error('Lỗi khi gọi AI:', error);
+
+        if (error.status === 429) {
+            return res.status(503).json({
+                success: false,
+                message: 'AI đang quá tải, vui lòng thử lại sau ít phút.'
+            });
+        }
+
+        if (error.status === 400 || error.status === 403) {
+            return res.status(500).json({
+                success: false,
+                message: 'Cấu hình AI không hợp lệ, liên hệ quản trị viên.'
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: 'Lỗi server khi xử lý câu hỏi AI'
+        });
+    }
+};
+
 module.exports = {
     getVaccineInfo,
     getQuarantineStatus,
@@ -531,5 +575,6 @@ module.exports = {
     getImmigrationHistory,
     getCuaKhauList,
     submitImmigrationDeclaration,
-    submitCheckin
+    submitCheckin,
+    askHealthAI,
 };
