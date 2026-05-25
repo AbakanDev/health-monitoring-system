@@ -12,6 +12,7 @@ import com.example.truyvetyte.model.CheckinStatsResponse
 import com.example.truyvetyte.model.ContactHistoryResponse
 import com.example.truyvetyte.model.ContactStatsResponse
 import com.example.truyvetyte.model.CuaKhauListResponse
+import com.example.truyvetyte.model.DashboardOverviewResponse
 import com.example.truyvetyte.model.DashboardSummaryResponse
 import com.example.truyvetyte.model.HealthResponse
 import com.example.truyvetyte.model.ImmigrationSubmitResponse
@@ -134,4 +135,8 @@ interface ApiService {
     @POST("api/health/ai/ask")
     suspend fun askHealthAI(@Body body: AiAskRequest): Response<AiAskResponse>
 
+    @GET("api/health/dashboard-overview")
+    suspend fun getDashboardOverview(
+        @Header("Authorization") token: String
+    ): Response<DashboardOverviewResponse>
 }

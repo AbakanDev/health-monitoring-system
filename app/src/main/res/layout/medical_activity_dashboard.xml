@@ -156,7 +156,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Tổng quát số lượng hôm nay:"
+                    android:text="Tổng quát số lượng tháng này:"
                     android:textColor="#BA68C8"
                     android:textSize="17sp"
                     android:textStyle="bold" />
