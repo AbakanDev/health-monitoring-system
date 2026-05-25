@@ -107,8 +107,6 @@ class MainActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body() != null) {
                         val message = response.body()?.message
                         Toast.makeText(this@MainActivity, "✅ Thành công: $message", Toast.LENGTH_LONG).show()
-                    } else {
-                        Toast.makeText(this@MainActivity, "❌ Gọi API được nhưng bị lỗi: ${response.code()}", Toast.LENGTH_LONG).show()
                     }
                 }
             } catch (e: Exception) {
