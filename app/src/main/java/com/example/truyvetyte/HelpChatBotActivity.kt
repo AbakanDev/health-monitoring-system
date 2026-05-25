@@ -2,6 +2,7 @@ package com.example.truyvetyte
 
 import android.os.Bundle
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -41,6 +42,15 @@ class HelpChatBotActivity : AppCompatActivity() {
                 addMessage("⏳ Đang xử lý...", isBot = true)
                 askAI(userText)
             }
+        }
+        val btnBack = findViewById<ImageButton>(R.id.btnbacktohelp) // Thay bằng ID nút của bạn
+
+        btnBack.setOnClickListener {
+            // Cách 1: Bắt chước hệt như bấm nút Back hệ thống (có xử lý cả quay lại Fragment)
+            onBackPressedDispatcher.onBackPressed()
+
+            // Cách 2: Nếu chỉ muốn đóng Activity hiện tại để về Activity trước đó
+            // finish()
         }
     }
 
