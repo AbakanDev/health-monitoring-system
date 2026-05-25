@@ -61,6 +61,12 @@ class MainActivity : AppCompatActivity() {
         btnHelp.setOnClickListener {
             replaceFragment(HelpActivity())
         }
+        val btnLogout = findViewById<ImageButton>(R.id.iv_logout_header)
+
+        btnLogout.setOnClickListener {
+            // Yêu cầu Activity chứa Fragment này thực hiện lệnh Back
+            onBackPressedDispatcher.onBackPressed()
+        }
         // Xử lý khi app vừa mở lên
         handleIntent(intent)
     }
