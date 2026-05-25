@@ -52,6 +52,19 @@ class HelpChatBotActivity : AppCompatActivity() {
             // Cách 2: Nếu chỉ muốn đóng Activity hiện tại để về Activity trước đó
             // finish()
         }
+        // --- THÊM ĐOẠN NÀY ĐỂ XỬ LÝ CUỘN KHI BÀN PHÍM HIỆN ---
+        rvChat.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
+            // Nếu đáy màn hình hiện tại (bottom) nhỏ hơn đáy màn hình cũ (oldBottom)
+            // nghĩa là bàn phím vừa hiện lên làm màn hình bị đẩy lên
+            if (bottom < oldBottom) {
+                rvChat.postDelayed({
+                    if (chatList.isNotEmpty()) {
+                        // Cuộn mượt mà xuống tin nhắn cuối cùng
+                        rvChat.smoothScrollToPosition(chatList.size - 1)
+                    }
+                }, 100) // Chờ 100ms để bàn phím hiện xong
+            }
+        }
     }
 
     private fun askAI(question: String) {
