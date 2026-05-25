@@ -558,6 +558,25 @@ const askHealthAI = async (req, res) => {
     }
 };
 
+const getDashboardOverview = async (req, res) => {
+    try {
+        // Lưu ý: Gọi từ healthService thay vì medicalService
+        const overviewData = await healthService.getMedicalOverview();
+        
+        return res.status(200).json({
+            success: true,
+            message: "Lấy số liệu tổng quan y tế thành công",
+            data: overviewData
+        });
+    } catch (error) {
+        console.error("Lỗi khi lấy số liệu dashboard y tế:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Lỗi server khi lấy dữ liệu tổng quan"
+        });
+    }
+};
+
 module.exports = {
     getVaccineInfo,
     getQuarantineStatus,
@@ -577,4 +596,5 @@ module.exports = {
     submitImmigrationDeclaration,
     submitCheckin,
     askHealthAI,
+    getDashboardOverview,
 };

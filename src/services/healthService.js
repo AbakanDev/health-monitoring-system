@@ -419,7 +419,6 @@ const getAllCuaKhau = async () => {
     }
 };
 
-// Tạo tờ khai xuất nhập cảnh
 const createImmigrationDeclaration = async ({ MaNguoiDung, MaCuaKhau }) => {
     const MaToKhaiXNC = `XNC_${Date.now()}`;
     const conn = await db.getConnection();
@@ -488,6 +487,35 @@ const createCheckin = async ({ MaNguoiDung, MaKhuVuc }) => {
     }
 };
 
+const getMedicalOverview = async () => {
+    try {
+        const queryF0 = `SELECT COUNT(DISTINCT MaNguoiDung) AS TongCaBenh FROM GHINHANCAPDO WHERE MaCapDo = 'F0';`;
+        
+        const queryNguoiDung = `SELECT COUNT(MaNguoiDung) AS TongBenhNhan FROM NGUOIDUNG;`;
+        
+        const queryThangNay = `
+            SELECT 
+                (SELECT COUNT(*) FROM TIEMCHUNG WHERE MONTH(NgayTiem) = MONTH(CURRENT_DATE()) AND YEAR(NgayTiem) = YEAR(CURRENT_DATE())) AS TiemChungThangNay,
+                (SELECT COUNT(*) FROM XETNGHIEM WHERE MONTH(NgayXetNghiem) = MONTH(CURRENT_DATE()) AND YEAR(NgayXetNghiem) = YEAR(CURRENT_DATE())) AS XetNghiemThangNay,
+                (SELECT COUNT(*) FROM CACHLY WHERE MONTH(NgayBatDau) = MONTH(CURRENT_DATE()) AND YEAR(NgayBatDau) = YEAR(CURRENT_DATE())) AS CachLyThangNay;
+        `;
+
+        const [[f0Result]] = await db.execute(queryF0);
+        const [[nguoiDungResult]] = await db.execute(queryNguoiDung);
+        const [[thangNayResult]] = await db.execute(queryThangNay);
+
+        return {
+            TongCaBenh: f0Result.TongCaBenh || 0,
+            TongBenhNhan: nguoiDungResult.TongBenhNhan || 0,
+            TiemChungThangNay: thangNayResult.TiemChungThangNay || 0,
+            XetNghiemThangNay: thangNayResult.XetNghiemThangNay || 0,
+            CachLyThangNay: thangNayResult.CachLyThangNay || 0
+        };
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     getVaccineDosesByCCCD,
     getActiveQuarantines,
@@ -505,4 +533,5 @@ module.exports = {
     getAllCuaKhau,
     createImmigrationDeclaration,
     createCheckin,
+    getMedicalOverview,
 };
