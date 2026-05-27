@@ -363,7 +363,8 @@ const getHealthDeclarationHistory = async (req, res) => {
 const submitHealthDeclaration = async (req, res) => {
     try {
         const { TiepXucF0, CoBenhNen, ChiTietBenhNen, DiVeTuVungDich, danhSachTrieuChung } = req.body;
-        const MaNguoiDung = req.user.MaNguoiDung; // Lấy từ token đã verify
+        // Cần MaTaiKhoan từ token để SP kiểm tra quyền
+        const MaTaiKhoan = req.user.MaTaiKhoan; 
 
         if (TiepXucF0 === undefined || CoBenhNen === undefined || DiVeTuVungDich === undefined) {
             return res.status(400).json({
@@ -373,12 +374,12 @@ const submitHealthDeclaration = async (req, res) => {
         }
 
         const result = await healthService.createHealthDeclaration({
-            MaNguoiDung,
+            MaTaiKhoan,
             TiepXucF0,
             CoBenhNen,
             ChiTietBenhNen,
             DiVeTuVungDich,
-            danhSachTrieuChung // Ví dụ: ['TC001', 'TC002', 'TC004']
+            danhSachTrieuChung
         });
 
         return res.status(201).json({
@@ -389,10 +390,11 @@ const submitHealthDeclaration = async (req, res) => {
 
     } catch (error) {
         console.error('Lỗi khi tạo tờ khai y tế:', error);
-        return res.status(500).json({
-            success: false,
-            message: 'Lỗi server khi tạo tờ khai y tế'
-        });
+        // Bắt lỗi từ SIGNAL SQLSTATE trong Stored Procedure
+        if (error.message.includes('[Lỗi QH')) {
+            return res.status(403).json({ success: false, message: error.message });
+        }
+        return res.status(500).json({ success: false, message: error.message || 'Lỗi server khi tạo tờ khai y tế' });
     }
 };
 
@@ -489,7 +491,7 @@ const submitImmigrationDeclaration = async (req, res) => {
 const submitCheckin = async (req, res) => {
     try {
         const { MaKhuVuc } = req.body;
-        const MaNguoiDung = req.user.MaNguoiDung; // từ verifyToken
+        const MaTaiKhoan = req.user.MaTaiKhoan;
 
         if (!MaKhuVuc) {
             return res.status(400).json({
@@ -498,7 +500,7 @@ const submitCheckin = async (req, res) => {
             });
         }
 
-        const data = await healthService.createCheckin({ MaNguoiDung, MaKhuVuc });
+        const data = await healthService.createCheckin({ MaTaiKhoan, MaKhuVuc });
 
         return res.status(201).json({
             success: true,
@@ -508,10 +510,10 @@ const submitCheckin = async (req, res) => {
 
     } catch (error) {
         console.error('Lỗi khi check-in:', error);
-        return res.status(500).json({
-            success: false,
-            message: 'Lỗi server khi thực hiện check-in'
-        });
+        if (error.message.includes('[Lỗi QH')) {
+            return res.status(403).json({ success: false, message: error.message });
+        }
+        return res.status(500).json({ success: false, message: error.message || 'Lỗi server khi thực hiện check-in' });
     }
 };
 

@@ -332,33 +332,33 @@ const getHealthDeclarationHistoryByCCCD = async (cccd) => {
     }
 };
 
+// sử dụng procedure sp_KhaiBaoYTe
 const createHealthDeclaration = async (declarationData) => {
-    const { MaNguoiDung, TiepXucF0, CoBenhNen, ChiTietBenhNen, DiVeTuVungDich, danhSachTrieuChung } = declarationData;
-
+    // Bổ sung MaTaiKhoan để chạy SP phân quyền
+    const { MaTaiKhoan, TiepXucF0, CoBenhNen, ChiTietBenhNen, DiVeTuVungDich, danhSachTrieuChung } = declarationData;
     const MaToKhai = `TK_${Date.now()}`;
-
     const conn = await db.getConnection();
+
     try {
         await conn.beginTransaction();
 
-        // 1. Tạo tờ khai y tế
+        // 1. Gọi Stored Procedure Tạo tờ khai y tế
         await conn.execute(
-            `INSERT INTO TOKHAIYTE 
-                (MaToKhai, ThoiGianKhaiBaoYTe, TiepXucF0, CoBenhNen, ChiTietBenhNen, DiVeTuVungDich, MaNguoiDung)
-             VALUES (?, NOW(), ?, ?, ?, ?, ?)`,
-            [MaToKhai, TiepXucF0, CoBenhNen, ChiTietBenhNen || null, DiVeTuVungDich, MaNguoiDung]
+            `CALL sp_KhaiBaoYTe(?, ?, ?, ?, ?, ?)`,
+            [MaTaiKhoan, MaToKhai, TiepXucF0, CoBenhNen, ChiTietBenhNen || null, DiVeTuVungDich]
         );
 
-        // 2. Ghi nhận từng triệu chứng (nếu có)
+        // 2. Gọi Stored Procedure Ghi nhận từng triệu chứng (nếu có)
         if (danhSachTrieuChung && danhSachTrieuChung.length > 0) {
-            const values = danhSachTrieuChung.map(maTC => [MaToKhai, maTC]);
-            await conn.query(
-                `INSERT INTO GHINHANTRIEUCHUNG (MaToKhai, MaTrieuChung) VALUES ?`,
-                [values]
-            );
+            for (const maTC of danhSachTrieuChung) {
+                await conn.execute(
+                    `CALL sp_GhiNhanTrieuChung(?, ?, ?)`,
+                    [MaTaiKhoan, MaToKhai, maTC]
+                );
+            }
         }
 
-        // 3. Đọc lại bản ghi vừa tạo — cùng format với getHealthDeclarationHistoryByCCCD
+        // 3. Đọc lại bản ghi vừa tạo
         const [rows] = await conn.execute(
             `SELECT 
                 1 AS LanKhaiBao,
@@ -370,7 +370,7 @@ const createHealthDeclaration = async (declarationData) => {
         );
 
         await conn.commit();
-        return { MaToKhai, khaiBao: rows[0] }; // khaiBao có Ngay + Gio khớp với history
+        return { MaToKhai, khaiBao: rows[0] };
     } catch (error) {
         await conn.rollback();
         throw error;
@@ -456,29 +456,29 @@ const createImmigrationDeclaration = async ({ MaNguoiDung, MaCuaKhau }) => {
     }
 };
 
-const createCheckin = async ({ MaNguoiDung, MaKhuVuc }) => {
+// sử dụng procedure sp_CheckIn
+const createCheckin = async ({ MaTaiKhoan, MaKhuVuc }) => {
     try {
-        const [result] = await db.execute(
-            `INSERT INTO LICHSUCHECKIN (MaNguoiDung, MaKhuVuc, ThoiGianCheckIn)
-             VALUES (?, ?, NOW())`,
-            [MaNguoiDung, MaKhuVuc]
+        // Gọi SP Checkin (Tự động lấy MaNguoiDung từ MaTaiKhoan trong DB)
+        await db.execute(
+            `CALL sp_CheckIn(?, ?)`,
+            [MaTaiKhoan, MaKhuVuc]
         );
 
-        // Trả về thông tin khu vực vừa check-in
+        // Lấy thông tin khu vực trả về cho frontend
         const [rows] = await db.execute(
             `SELECT 
                 k.TenKhuVuc,
-                DATE_FORMAT(c.ThoiGianCheckIn, '%d/%m/%Y %H:%i') AS ThoiGianCheckIn,
+                DATE_FORMAT(NOW(), '%d/%m/%Y %H:%i') AS ThoiGianCheckIn,
                 CASE 
                     WHEN k.Capdovung = 3 THEN 'Nguy Hiểm'
                     WHEN k.Capdovung = 2 THEN 'Nguy Cơ'
                     WHEN k.Capdovung = 1 THEN 'An Toàn'
                     ELSE 'Chưa xác định'
                 END AS TrangThaiKhuVuc
-             FROM LICHSUCHECKIN c
-             JOIN KHUVUC k ON c.MaKhuVuc = k.MaKhuVuc
-             WHERE c.MaLichSuCheckIn = ?`,
-            [result.insertId]
+             FROM KHUVUC k
+             WHERE k.MaKhuVuc = ?`,
+            [MaKhuVuc]
         );
 
         return rows[0];
