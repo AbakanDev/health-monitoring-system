@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F0FAFE"
+            android:fillViewport="true">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="80dp">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Giấy Khai Báo Sức Khỏe"
+                android:textColor="@color/bluewithcheckbox"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                android:text="Vui lòng khai báo đầy đủ và trung thực thông tin"
+                android:textColor="#6FBBE2"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        <!-- Lịch sử khai báo -->
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="16dp">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#55CBF9"
+                        android:padding="16dp">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lịch sử khai báo y tế"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                </RelativeLayout>
+
+                <TextView
+                        android:id="@+id/tvChuaKhaiBao"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Bạn chưa có lịch sử khai báo"
+                        android:textColor="#EF5350"
+                        android:textSize="16sp"
+                        android:textStyle="italic"
+                        android:gravity="center"
+                        android:padding="16dp"
+                        android:visibility="gone" />
+
+                <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxHeight="240dp"
+                        android:fillViewport="false">
+                    <LinearLayout
+                            android:id="@+id/layoutKhaiBaoContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" />
+                </ScrollView>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Triệu chứng -->
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Đánh giá triệu chứng: "
+                            android:textColor="@color/bluewithcheckbox"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="*"
+                            android:textColor="#FF0000"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                </LinearLayout>
+
+                <CheckBox
+                        android:id="@+id/cbSot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sốt"
+                        android:textColor="@color/bluelightgreen"
+                        android:buttonTint="@color/bluelightgreen"/>
+
+                <CheckBox
+                        android:id="@+id/cbKhoTho"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Khó thở"
+                        android:textColor="@color/bluelightgreen"
+                        android:buttonTint="@color/bluelightgreen"/>
+
+                <CheckBox
+                        android:id="@+id/cbDauHong"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Đau họng"
+                        android:textColor="@color/bluelightgreen"
+                        android:buttonTint="@color/bluelightgreen"/>
+
+                <CheckBox
+                        android:id="@+id/cbMetMoi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Mệt mỏi"
+                        android:textColor="@color/bluelightgreen"
+                        android:buttonTint="@color/bluelightgreen"/>
+
+                <CheckBox
+                        android:id="@+id/cbMatViGiac"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Mất vị giác/khứu giác"
+                        android:textColor="@color/bluelightgreen"
+                        android:buttonTint="@color/bluelightgreen"/>
+
+                <CheckBox
+                        android:id="@+id/cbHo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Ho"
+                        android:textColor="@color/bluelightgreen"
+                        android:buttonTint="@color/bluelightgreen"/>
+
+                <CheckBox
+                        android:id="@+id/cbKhongTrieuChung"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Không có triệu chứng"
+                        android:textColor="@color/bluelightgreen"
+                        android:buttonTint="@color/bluelightgreen"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Bệnh nền -->
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bạn có bệnh nền không? "
+                            android:textColor="@color/bluewithcheckbox"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="*"
+                            android:textColor="#FF0000"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                </LinearLayout>
+
+                <RadioGroup
+                        android:id="@+id/rgCoBenhNen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp">
+                    <RadioButton
+                            android:id="@+id/rbCoBenhNenCo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Có"
+                            android:textColor="@color/bluelightgreen"
+                            android:buttonTint="@color/bluelightgreen"
+                            android:layout_weight="1"/>
+                    <RadioButton
+                            android:id="@+id/rbCoBenhNenKhong"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Không"
+                            android:textColor="@color/bluelightgreen"
+                            android:buttonTint="@color/bluelightgreen"
+                            android:layout_weight="1"/>
+                </RadioGroup>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="4dp"
+                        android:text="Nếu có:"
+                        android:textColor="@color/bluewithcheckbox"
+                        android:textStyle="bold"/>
+
+                <EditText
+                        android:id="@+id/etChiTietBenhNen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:hint="Huyết áp cao, thấp, bla bla"
+                        android:textSize="14sp"
+                        android:textColorHint="#A0A0A0"
+                        android:backgroundTint="#D3D3D3"
+                        android:paddingBottom="12dp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Đánh giá nguy cơ -->
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đánh giá nguy cơ:"
+                        android:textColor="@color/bluewithcheckbox"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="12dp"/>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Trong 14 ngày qua, bạn có tiếp xúc với F0 không? *"
+                        android:textColor="@color/bluelightgreen"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                <RadioGroup
+                        android:id="@+id/rgTiepXucF0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="20dp">
+                    <RadioButton
+                            android:id="@+id/rbTiepXucF0Co"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Có"
+                            android:textColor="@color/bluelightgreen"
+                            android:buttonTint="@color/bluelightgreen"
+                            android:layout_weight="1"/>
+                    <RadioButton
+                            android:id="@+id/rbTiepXucF0Khong"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Không"
+                            android:textColor="@color/bluelightgreen"
+                            android:buttonTint="@color/bluelightgreen"
+                            android:layout_weight="1"/>
+                </RadioGroup>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Trong 14 ngày qua, bạn có đi từ vùng dịch không? *"
+                        android:textColor="@color/bluelightgreen"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                <RadioGroup
+                        android:id="@+id/rgDiVeTuVungDich"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+                    <RadioButton
+                            android:id="@+id/rbDiVeCo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Có"
+                            android:textColor="@color/bluelightgreen"
+                            android:buttonTint="@color/bluelightgreen"
+                            android:layout_weight="1"/>
+                    <RadioButton
+                            android:id="@+id/rbDiVeKhong"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Không"
+                            android:textColor="@color/bluelightgreen"
+                            android:buttonTint="@color/bluelightgreen"
+                            android:layout_weight="1"/>
+                </RadioGroup>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Cam kết -->
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="4dp">
+
+            <CheckBox
+                    android:id="@+id/cbCamKet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/bluelightgreen" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tôi cam kết thông tin khai báo là đúng sự thật "
+                    android:textColor="@color/bluelightgreen"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="*"
+                    android:textColor="#FF0000"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+        </LinearLayout>
+
+        <Button
+                android:id="@+id/btnHoanTat1"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="30dp"
+                android:text="HOÀN TẤT"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/darklightbluemint"
+                app:cornerRadius="28dp" />
+
+    </LinearLayout>
+</ScrollView>

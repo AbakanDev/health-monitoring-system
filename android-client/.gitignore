@@ -1,0 +1,52 @@
+# Bỏ qua các file ứng dụng đã build
+*.apk
+*.aar
+*.ap_
+*.aab
+
+# Bỏ qua các file máy ảo Dalvik/ART và file class Java
+*.dex
+*.class
+
+# Bỏ qua các thư mục chứa file được gen tự động
+bin/
+gen/
+out/
+
+# Bỏ qua bộ nhớ đệm và thư mục build của Gradle (Rất quan trọng)
+.gradle/
+build/
+
+# Bỏ qua file cấu hình môi trường máy tính cá nhân (Chứa đường dẫn SDK)
+local.properties
+
+# Bỏ qua các file Log
+*.log
+
+# Bỏ qua thư mục captures và navigation của Android Studio
+captures/
+.navigation/
+.idea/
+# Bỏ qua file cấu hình cá nhân của IntelliJ / Android Studio
+*.iml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/assetWizardSettings.xml
+.idea/dictionaries
+.idea/libraries
+.idea/caches
+.idea/modules.xml
+.idea/navEditor.xml
+.idea/deploymentTargetDropDown.xml
+
+# Bỏ qua thư mục build native (C/C++)
+.externalNativeBuild/
+.cxx/
+
+# Bỏ qua file hệ thống ẩn của Mac OS (Phòng trường hợp làm việc với người dùng Mac)
+.DS_Store
+
+# Bỏ qua các file Keystore lưu chữ ký bảo mật app (Bỏ comment nếu không muốn push key lên Git)
+# *.jks
+# *.keystore
