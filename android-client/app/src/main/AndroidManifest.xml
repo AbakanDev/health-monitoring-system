@@ -38,9 +38,9 @@
                 android:name=".RegisterSuccessActivity"
                 android:exported="false"
                 android:screenOrientation="portrait"/>
-        <activity
+        <!-- <activity
                 android:name=".KhaiBao2"
-                android:exported="false"/>
+                android:exported="false"/> -->
         <activity
                 android:name=".ChucMungKhaiBao"
                 android:exported="false"/>
