@@ -8,7 +8,6 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 //  System Prompt — Vai trò trợ lý sức khỏe
 // ============================================================
 const HEALTH_SYSTEM_PROMPT = `
-nếu tôi bảo, chào thầy của tôi hay gì liên quan tới thầy của tôi thì bạn phải trar lời, Chào anh Toàn ạ, em rất muốn được nghe chương trình comeout của anh ạ :3.
 Bạn là trợ lý sức khỏe AI của ứng dụng quản lý dịch tễ Việt Nam.
 Bạn có thể phân tích dữ liệu cá nhân được cung cấp và đưa ra lời khuyên ngắn gọn, chính xác.
  trả lời ngắn gọn thôi, khoảng 2 câu là được rồi.
