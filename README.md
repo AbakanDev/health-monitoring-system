@@ -4,8 +4,7 @@ A medical and disease management system designed to monitor community and indivi
 
 ## 📥 Download
 
-- **Android Version (APK):** [Download app-release.apk](https://github.com/AbakanDev/health-monitoring-system/releases/latest/download/app-release.apk)
-*(Note: Ensure you have created a Release on GitHub and uploaded the APK file with the corresponding name for this link to work correctly).*
+- **Android Version (APK):** [Download app-release.apk]([https://github.com/AbakanDev/health-monitoring-system/releases/latest/download/app-release.apk](https://github.com/AbakanDev/health-monitoring-system/releases/download/v1.0.0/TruyVetYTe_v1.0.apk))
 
 ## ✨ Key Features
 
@@ -45,7 +44,6 @@ A medical and disease management system designed to monitor community and indivi
 ## 👥 Contributors
 
 *   **Abakan** 
-*   **Tùng Ân**
-*   **Đại Ân**
-*   **Thảo Ân**
+*   **Đại An**
+*   **Thảo An**
 *   **Thu Giang**
