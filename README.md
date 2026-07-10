@@ -44,6 +44,6 @@ A medical and disease management system designed to monitor community and indivi
 ## 👥 Contributors
 
 *   **Tung An** 
-*   **Dai AN**
+*   **Dai An**
 *   **Thao An**
 *   **Thu Giang**
