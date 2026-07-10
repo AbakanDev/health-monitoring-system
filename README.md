@@ -29,7 +29,7 @@ A medical and disease management system designed to monitor community and indivi
 ### Setup Steps
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/AbakanDev/health-monitoring-system.git](https://github.com/AbakanDev/health-monitoring-system.git)
+    git clone https://github.com/AbakanDev/health-monitoring-system.git
     ```
 2.  **Server Configuration (Node.js):**
     *   Navigate to the backend source code directory.
