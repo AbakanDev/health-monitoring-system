@@ -43,7 +43,7 @@ A medical and disease management system designed to monitor community and indivi
 
 ## 👥 Contributors
 
-*   **Abakan** 
-*   **Đại An**
-*   **Thảo An**
+*   **Tung An** 
+*   **Dai AN**
+*   **Thao An**
 *   **Thu Giang**
